@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.TeacherMapper">
+    <resultMap id="convertTeacher" type="lrs.entity.Teacher">
+        <id property="id" column="tea_id"></id>
+        <result property="pwd" column="tea_pwd"></result>
+        <result property="name" column="tea_name"></result>
+        <result property="tel" column="tea_tel"></result>
+        <result property="mail" column="tea_mail"></result>
+        <result property="sex" column="tea_sex" javaType="String" jdbcType="INTEGER"></result>
+    </resultMap>
+    <select id="queryTeaByIdPwd"  resultMap="convertTeacher">
+        select tea_id,tea_pwd,tea_name,tea_tel,tea_mail,
+        (CASE
+              WHEN tea_sex = 1 THEN '男'
+              WHEN tea_sex = 2 THEN '女'
+              ELSE '未知'
+              END
+        )tea_sex from teacher where tea_id=#{tea_id} and tea_pwd=#{tea_pwd}
+    </select>
+
+    <select id="querySchIdByTeaId" resultType="Integer">
+        select sch_id from school_tea where tea_id=#{tea_id}
+    </select>
+
+</mapper>

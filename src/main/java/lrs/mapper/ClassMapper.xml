@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.ClassMapper">
+    <resultMap id="convertClass" type="lrs.entity.Class">
+        <id property="class_id" column="cla_id"></id>
+        <result property="class_name" column="cla_name"></result>
+    </resultMap>
+    <select id="queryClassById"  resultMap="convertClass">
+        select cla_id,cla_name from class where cla_id=#{cla_id}
+    </select>
+
+
+    <select id="querySchIdByClaId"  resultType="Integer">
+        select sch_id from school_class where cla_id=#{cla_id}
+    </select>
+</mapper>

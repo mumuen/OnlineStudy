@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" th:href="@{/static/css/common.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}" type="text/css">
+    <script type="text/javascript" th:src="@{/static/js/jquery.mini.js}"></script>
+    <title>测试</title>
+</head>
+<body>
+
+    <input type="button" id="btn" value="获取数据">
+
+    <script>
+        $(function(){
+            $("#btn").on("click",function () {
+                $.ajax({
+                    url: "/testJson",
+                    type: "get",
+                    dataType: "json",
+                    success: function(result){
+                        alert(result.id+result.name);
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>

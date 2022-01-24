@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.StudentMapper">
+
+    <resultMap id="convertStudent" type="lrs.entity.Student">
+        <id property="id" column="stu_id"></id>
+        <result property="pwd" column="stu_pwd"></result>
+        <result property="name" column="stu_name"></result>
+        <result property="tel" column="stu_tel"></result>
+        <result property="mail" column="stu_mail"></result>
+        <result property="pwd" column="stu_pwd"></result>
+        <result property="sex" column="stu_sex" javaType="String" jdbcType="INTEGER"></result>
+    </resultMap>
+    <select id="queryStuByIdPwd"  resultMap="convertStudent">
+        select stu_id,stu_pwd,stu_name,stu_tel,stu_mail,
+        (CASE
+              WHEN stu_sex = 1 THEN '男'
+              WHEN stu_sex = 2 THEN '女'
+              ELSE '未知'
+              END
+        )stu_sex from student where stu_id=#{stu_id} and stu_pwd=#{stu_pwd}
+    </select>
+
+    <select id="queryClaIdByStuId" resultType="Integer">
+        select cla_id from cla_stu where stu_id=#{stu_id}
+    </select>
+
+</mapper>

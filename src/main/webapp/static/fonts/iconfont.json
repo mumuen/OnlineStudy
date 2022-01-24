@@ -1,0 +1,30 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2076271",
+      "name": "退出",
+      "font_class": "tuichu",
+      "unicode": "e892",
+      "unicode_decimal": 59538
+    },
+    {
+      "icon_id": "4165961",
+      "name": "老师",
+      "font_class": "laoshi",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "14516999",
+      "name": "学生",
+      "font_class": "xuesheng",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.CourseMapper">
+
+    <select id="queryCousByClaId" resultType="lrs.entity.Course">
+        select cou_id,cou_name,cou_tea_name,cou_info,cou_hour,cou_cover_path,cou_state from course
+        where cou_id in(
+          select cou_id from cla_cou where cla_id=#{cla_id}
+        )
+    </select>
+
+
+</mapper>

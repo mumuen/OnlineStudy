@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的课程</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+    <style>
+        .courses_box .course_box {
+            position: relative;
+            float: left;
+            width: 300px;
+            height: 300px;
+            background-color: white;
+            border-radius: 10px;
+            margin-left: 50px;
+            margin-bottom: 30px;
+            color: black;
+            transition: all .3s ease 0s;
+        }
+
+        .courses_box a:nth-child(3n-2) {
+            margin-left: 0px;
+        }
+
+        .courses_box .course_box img {
+            width: 300px;
+            height: 162.5px;
+            border-radius: 10px;
+        }
+
+        .courses_box .course_box h3 {
+            padding-left: 10px;
+        }
+
+        .courses_box .course_box p {
+
+            height: 60px;
+            font-size: 14px;
+            padding-left: 10px;
+            padding-top: 10px;
+            text-indent: 2em;
+            color: #a8a8b3;
+            overflow: hidden;
+        }
+
+        .courses_box .course_box div {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .courses_box .course_box .course_tea_name {
+            float: left;
+            padding-left: 10px;
+        }
+
+        .courses_box .course_box .course_time {
+            float: right;
+            padding-right: 10px;
+        }
+
+        .courses_box .course_box .course_state {
+            position: absolute;
+            top: 10px;
+            left: -5px;
+            width: 80px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            background-color: #ff7a3e;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .course_box:hover {
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, .3);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="navbar_left clearfix" th:if="${session.user!=null}">
+            <img th:src="${session.school.sch_img_path}">
+            <span th:text="${session.school.sch_name}"></span>
+        </div>
+        <div class="navbar_left clearfix" th:if="${session.user==null}">
+            <span>欢迎你！请先<a href="login.html">登录</a></span>
+        </div>
+        <div class="navbar_mid clearfix">
+            <ul>
+                <li><a href="/index">首页</a></li>
+                <li><a href="/stu_courses">我的课程</a></li>
+                <li><a href="javascript:;">课程资料</a></li>
+                <li><a href="javascript:;">考试中心</a></li>
+                <li><a href="javascript:;">个人中心</a></li>
+            </ul>
+        </div>
+        <div class="navbar_right clearfix" th:if="${session.user!=null}">
+            <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+                <span class="iconfont">&#xe613;</span>
+                <span th:text="${session.user.name}"></span>
+            </div>
+            <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+                <span class="iconfont">&#xe646;</span>
+                <span th:text="${session.user.name}"></span>
+            </div>
+            <div class="navbar_right_right">
+                <span class="iconfont">&#xe892;</span>
+                <a th:href="@{/logout}">退出登录</a>
+            </div>
+        </div>
+
+
+    </nav>
+
+    <main class="w">
+        <div class="clearfix courses_box" th:if="${#arrays.length(courses)!=0}">
+            <a href="javascript:;" class="course_box" th:each="course:${courses}">
+                <img th:src="${course.cou_cover_path}" alt="">
+                <h3 th:text="${course.cou_name}"></h3>
+                <p th:text="${course.cou_info}"></p>
+                <div class="course_tea_name">
+                    <span>开课人:</span>
+                    <span th:text="${course.cou_tea_name}"></span>
+                </div>
+                <div class="course_time">
+                    <span>课时:</span>
+                    <span th:text="${course.cou_hour}"></span>
+                    <span>学时</span>
+                </div>
+                <div class="course_state" th:if="${course.cou_state==0}">已结束</div>
+                <div class="course_state" th:if="${course.cou_state==1}">进行中</div>
+            </a>
+
+        </div>
+
+        <div  th:if="${#arrays.length(courses)==0}">你还没有课程！</div>
+    </main>
+
+    <script>
+        $(function () {
+
+
+
+        })
+    </script>
+</body>
+
+</html>
