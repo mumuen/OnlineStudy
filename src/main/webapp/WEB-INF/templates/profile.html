@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+    <style>
+        .color_white {
+            background-color: white;
+        }
+
+        main {
+            position: relative;
+            padding-left: 150px;
+            box-sizing: border-box;
+
+        }
+
+        .info_head {
+            height: 50px;
+            line-height: 50px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .info_content div {
+            margin-left: 20px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 20px;
+        }
+
+        .info_content div span:nth-of-type(1) {
+            display: inline-block;
+            width: 100px;
+        }
+
+
+
+        .input_box {
+            width: 300px;
+            height: 30px;
+            padding-left: 10px;
+            font-size: 16px;
+            outline:none;
+            border: 2px solid;
+            border-radius: 5px;
+
+        }
+
+        .btn {
+            height: 37px;
+            background-color: #fe7300;
+            color: #fff;
+            border: none;
+            border-radius: 2px;
+            padding: 0 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .info_change_pwd {
+            position: absolute;
+            background-color: #fff;
+            top: 55px;
+            left: 250px;
+            width: 500px;
+            height: 500px;
+            padding-left: 46px;
+            box-sizing: border-box;
+        }
+
+        .info_change_pwd div {
+            height: 70px;
+            line-height: 70px;
+        }
+
+        .info_change_pwd h3 {
+            height: 70px;
+            line-height: 70px;
+        }
+
+        .info_change_pwd div span {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .bc_color {
+            background-color: rgba(0, 0, 0, .3);
+        }
+    </style>
+</head>
+
+<body class="">
+
+<nav>
+    <div class="navbar_left clearfix" th:if="${session.user!=null}">
+        <img th:src="${session.school.sch_img_path}">
+        <span th:text="${session.school.sch_name}"></span>
+    </div>
+    <div class="navbar_left clearfix" th:if="${session.user==null}">
+        <span>欢迎你！请先<a href="login.html">登录</a></span>
+    </div>
+    <div class="navbar_mid clearfix">
+        <ul>
+            <li><a href="/index">首页</a></li>
+            <li><a href="/stu_courses">我的课程</a></li>
+            <li><a href="javascript:;">课程资料</a></li>
+            <li><a href="javascript:;">考试中心</a></li>
+            <li><a href="/profile">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="navbar_right clearfix" th:if="${session.user!=null}">
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+            <span class="iconfont">&#xe613;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+            <span class="iconfont">&#xe646;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_right">
+            <span class="iconfont">&#xe892;</span>
+            <a th:href="@{/logout}">退出登录</a>
+        </div>
+    </div>
+
+
+</nav>
+
+    <main class="w color_white clearfix">
+        <div class="info_head" id="info_head">基本信息</div>
+        <div class="info_content" id="info_content">
+            <form action="">
+                <div class="box_sch">
+                    <span>学校:</span><span th:text="${session.school.sch_name}"></span>
+                </div>
+                <div class="box_cla">
+                    <span>班级:</span><span th:text="${session.class.class_name}"></span>
+                </div>
+                <div class="box_uname">
+                    <span>用户名:</span><span th:text="${session.user.name}"></span>
+                </div>
+                <div class="box_id">
+                    <span>用户ID:</span><span th:text="${session.user.id}">120210101</span>
+                </div>
+                <div class="box_sex">
+                    <span>性别:</span>
+                    <input type="radio" name="sex" id="sex_m" th:checked="${session.user.sex=='男'?true:false}"><label for="sex_m" style="margin-left: 10px;">男</label>
+                    <input type="radio" name="sex" id="sex_w" style="margin-left: 10px;" th:checked="${session.user.sex=='女'?true:false}"><label for="sex_w"
+                        style="margin-left: 10px;">女</label>
+                </div>
+                <div class="box_tel">
+                    <span>电话:</span>
+                    <input type="tel" class="input_box" placeholder="请填写你的电话" maxlength="11" th:value="${session.user.tel}">
+                </div>
+                <div class="box_mail">
+                    <span>邮箱:</span>
+                    <input type="email" class="input_box"  placeholder="请填写你的邮箱" th:value="${session.user.mail}">
+                </div>
+                <div class="box_save">
+                    <input type="button" value="更新账户信息" class="btn">
+                    <input type="button" value="修改密码" id="pwd_btn" class="btn">
+                </div>
+            </form>
+        </div>
+
+        <div class="info_change_pwd hidden" id="pwd_box">
+            <h3>修改密码</h3>
+            <div>
+                <span>原密码:</span><input type="text" name=""  class="input_box">
+            </div>
+            <div>
+                <span>新密码:</span><input type="password" name=""  class="input_box">
+            </div>
+            <div>
+                <span>确认密码:</span><input type="password" name=""  class="input_box">
+            </div>
+            <div>
+                <input type="button" value="修改密码" class="btn">
+                <input type="button" value="关闭窗口" class="btn" id="close_btn">
+            </div>
+        </div>
+    </main>
+
+    <script>
+        $(function () {
+            $("#pwd_btn").on("click", function () {
+                $("#info_head").hide();
+                $("#info_content").hide();
+                $("body").addClass("bc_color");
+                $("#pwd_box").slideDown(200);
+            });
+
+            $("#close_btn").on("click", function () {
+                $("#pwd_box").hide();
+                $("body").removeClass("bc_color");
+                $("#info_head").show();
+                $("#info_content").show();
+
+            });
+        })
+    </script>
+</body>
+
+</html>
