@@ -11,20 +11,18 @@
         <result property="tel" column="stu_tel"></result>
         <result property="mail" column="stu_mail"></result>
         <result property="pwd" column="stu_pwd"></result>
-        <result property="sex" column="stu_sex" javaType="String" jdbcType="INTEGER"></result>
+        <result property="sex" column="stu_sex" javaType="Integer" jdbcType="INTEGER"></result>
     </resultMap>
     <select id="queryStuByIdPwd"  resultMap="convertStudent">
-        select stu_id,stu_pwd,stu_name,stu_tel,stu_mail,
-        (CASE
-              WHEN stu_sex = 1 THEN '男'
-              WHEN stu_sex = 2 THEN '女'
-              ELSE '未知'
-              END
-        )stu_sex from student where stu_id=#{stu_id} and stu_pwd=#{stu_pwd}
+        select stu_id,stu_pwd,stu_name,stu_tel,stu_mail,stu_sex from student where stu_id=#{stu_id} and stu_pwd=#{stu_pwd}
     </select>
 
     <select id="queryClaIdByStuId" resultType="Integer">
         select cla_id from cla_stu where stu_id=#{stu_id}
     </select>
+
+    <update id="updateStudent" parameterType="lrs.entity.Student">
+        update student set stu_tel=#{tel},stu_mail=#{mail},stu_sex=#{sex} where stu_id=#{id}
+    </update>
 
 </mapper>

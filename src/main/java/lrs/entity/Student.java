@@ -6,17 +6,25 @@ public class Student {
     private String name;
     private String tel;
     private String mail;
-    private String sex;
+    private Integer sex;
 
     public Student() {
     }
 
-    public Student(Integer id, String pwd, String name, String tel, String mail, String sex) {
+    public Student(Integer id, String pwd, String name, String tel, String mail,Integer sex) {
         this.id = id;
         this.pwd = pwd;
         this.name = name;
         this.tel = tel;
         this.mail = mail;
+        this.sex=sex;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -60,11 +68,15 @@ public class Student {
         this.mail = mail;
     }
 
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", pwd='" + pwd + '\'' +
+                ", name='" + name + '\'' +
+                ", tel='" + tel + '\'' +
+                ", mail='" + mail + '\'' +
+                ", sex=" + sex +
+                '}';
     }
 }

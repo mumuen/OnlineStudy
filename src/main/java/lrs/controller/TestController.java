@@ -14,7 +14,7 @@ public class TestController {
     @RequestMapping("/testJson")
     @ResponseBody
     public Student test1(){
-        Student student = new Student(1,"123456","lrs","12345678910","2@2","男");
+        Student student = new Student(1,"123456","lrs","12345678910","2@2",1);
 
 
         return student;

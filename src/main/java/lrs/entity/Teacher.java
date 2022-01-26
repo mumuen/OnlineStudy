@@ -6,12 +6,12 @@ public class Teacher {
     private String name;
     private String tel;
     private String mail;
-    private String sex;
+    private Integer sex;
 
     public Teacher() {
     }
 
-    public Teacher(Integer id, String pwd, String name, String tel, String mail, String sex) {
+    public Teacher(Integer id, String pwd, String name, String tel, String mail, Integer sex) {
         this.id = id;
         this.pwd = pwd;
         this.name = name;
@@ -60,11 +60,11 @@ public class Teacher {
         this.mail = mail;
     }
 
-    public String getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 

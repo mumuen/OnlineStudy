@@ -139,12 +139,17 @@
     <main class="w color_white clearfix">
         <div class="info_head" id="info_head">基本信息</div>
         <div class="info_content" id="info_content">
-            <form action="">
+            <form>
                 <div class="box_sch">
                     <span>学校:</span><span th:text="${session.school.sch_name}"></span>
                 </div>
-                <div class="box_cla">
+                <div class="box_cla" th:if="${session.class!=null}">
                     <span>班级:</span><span th:text="${session.class.class_name}"></span>
+                </div>
+                <div class="box_role">
+                    <span>角色:</span>
+                    <span th:if="${#strings.startsWith(session.user.id,'2')}">教师</span>
+                    <span th:if="${#strings.startsWith(session.user.id,'1')}">学生</span>
                 </div>
                 <div class="box_uname">
                     <span>用户名:</span><span th:text="${session.user.name}"></span>
@@ -154,20 +159,20 @@
                 </div>
                 <div class="box_sex">
                     <span>性别:</span>
-                    <input type="radio" name="sex" id="sex_m" th:checked="${session.user.sex=='男'?true:false}"><label for="sex_m" style="margin-left: 10px;">男</label>
-                    <input type="radio" name="sex" id="sex_w" style="margin-left: 10px;" th:checked="${session.user.sex=='女'?true:false}"><label for="sex_w"
+                    <input type="radio" name="sex" id="sex_m" value="1" th:checked="${session.user.sex==1?true:false}"><label for="sex_m" style="margin-left: 10px;">男</label>
+                    <input type="radio" name="sex" id="sex_w" value="2" style="margin-left: 10px;" th:checked="${session.user.sex==2?true:false}"><label for="sex_w"
                         style="margin-left: 10px;">女</label>
                 </div>
                 <div class="box_tel">
                     <span>电话:</span>
-                    <input type="tel" class="input_box" placeholder="请填写你的电话" maxlength="11" th:value="${session.user.tel}">
+                    <input type="tel" id="tel" class="input_box" placeholder="请填写你的电话" maxlength="11" th:value="${session.user.tel}">
                 </div>
                 <div class="box_mail">
                     <span>邮箱:</span>
-                    <input type="email" class="input_box"  placeholder="请填写你的邮箱" th:value="${session.user.mail}">
+                    <input type="email" id="mail" class="input_box"  placeholder="请填写你的邮箱" th:value="${session.user.mail}">
                 </div>
                 <div class="box_save">
-                    <input type="button" value="更新账户信息" class="btn">
+                    <input type="button" value="更新账户信息" class="btn" id="update_profile">
                     <input type="button" value="修改密码" id="pwd_btn" class="btn">
                 </div>
             </form>
@@ -207,6 +212,28 @@
                 $("#info_content").show();
 
             });
+
+
+            function updateProfile(){
+                $("#update_profile").on("click",function(){
+
+                    $.ajax({
+                        url: "/profile/update",
+                        type: "post",
+                        data: {
+                            "tel": $("#tel").val(),
+                            "mail": $("#mail").val(),
+                            "sex": $("input[name='sex']:checked").val()!=null?$("input[name='sex']:checked").val():0
+                        },
+                        dataType: "json",
+                        success: function(){
+                            alert("信息更新成功！")
+
+                        }
+                    })
+                });
+            }
+            updateProfile();
         })
     </script>
 </body>

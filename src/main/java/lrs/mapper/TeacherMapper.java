@@ -7,4 +7,6 @@ public interface TeacherMapper {
     Teacher queryTeaByIdPwd(@Param("tea_id") Integer tea_id, @Param("tea_pwd") String tea_pwd);
 
     Integer querySchIdByTeaId(@Param("tea_id") Integer tea_id);
+
+    Integer updateTeacher(Teacher teacher);
 }
