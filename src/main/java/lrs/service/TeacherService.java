@@ -15,6 +15,12 @@ public class TeacherService {
         return teacherMapper.queryTeaByIdPwd(tea_id,tea_pwd);
     }
 
+    public Integer updateTeacher(Teacher teacher){
+        return teacherMapper.updateTeacher(teacher);
+    }
 
+    public Integer updateTeaPwd(Teacher teacher){
+        return teacherMapper.updateTeaPwd(teacher);
+    }
 
 }

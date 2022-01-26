@@ -23,4 +23,8 @@
         update teacher set tea_tel=#{tel},tea_mail=#{mail},tea_sex=#{sex} where tea_id=#{id}
     </update>
 
+    <update id="updateTeaPwd" parameterType="lrs.entity.Teacher">
+        update teacher set tea_pwd=#{pwd} where tea_id=#{id}
+    </update>
+
 </mapper>

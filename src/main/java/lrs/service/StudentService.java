@@ -15,5 +15,13 @@ public class StudentService {
         return studentMapper.queryStuByIdPwd(stu_id,stu_pwd);
     }
 
+    public Integer updateStudent(Student student){
+        return studentMapper.updateStudent(student);
+    }
+
+    public Integer updateStuPwd(Student student){
+        return studentMapper.updateStuPwd(student);
+    }
+
 
 }

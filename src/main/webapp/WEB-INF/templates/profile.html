@@ -181,16 +181,16 @@
         <div class="info_change_pwd hidden" id="pwd_box">
             <h3>修改密码</h3>
             <div>
-                <span>原密码:</span><input type="text" name=""  class="input_box">
+                <span>原密码:</span><input type="text" id="old_pwd" class="input_box">
             </div>
             <div>
-                <span>新密码:</span><input type="password" name=""  class="input_box">
+                <span>新密码:</span><input type="password" id="new_pwd" class="input_box">
             </div>
             <div>
-                <span>确认密码:</span><input type="password" name=""  class="input_box">
+                <span>确认密码:</span><input type="password"  id="new_pwd_check" class="input_box">
             </div>
             <div>
-                <input type="button" value="修改密码" class="btn">
+                <input type="button" value="修改密码" class="btn" id="update_pwd">
                 <input type="button" value="关闭窗口" class="btn" id="close_btn">
             </div>
         </div>
@@ -210,7 +210,8 @@
                 $("body").removeClass("bc_color");
                 $("#info_head").show();
                 $("#info_content").show();
-
+                //清除原密码框的数据
+                $("#old_pwd").val("");
             });
 
 
@@ -218,7 +219,7 @@
                 $("#update_profile").on("click",function(){
 
                     $.ajax({
-                        url: "/profile/update",
+                        url: "/profile/update_profile",
                         type: "post",
                         data: {
                             "tel": $("#tel").val(),
@@ -228,12 +229,46 @@
                         dataType: "json",
                         success: function(){
                             alert("信息更新成功！")
-
                         }
+
                     })
                 });
             }
             updateProfile();
+
+            function updatePwd(){
+                $("#update_pwd").on("click",function(){
+                    var old_pwd=$("#old_pwd").val();
+                    console.log(old_pwd);
+                    var new_pwd=$("#new_pwd").val();
+                    console.log("第一次密码"+new_pwd);
+                    var new_pwd_check=$("#new_pwd_check").val();
+                    console.log("第二次密码"+new_pwd_check);
+                    if(new_pwd==new_pwd_check){
+                        $.ajax({
+                            url: "/profile/update_pwd",
+                            type: "post",
+                            data: {
+                                "old_pwd": old_pwd,
+                                "new_pwd": new_pwd
+                            },
+                            dataType: "json",
+                            success: function(result){
+                                if(result.msg=="success"){
+                                    alert("修改成功！请重新登录");
+                                    window.location.href = '/logout';
+                                }else{
+                                    alert("修改失败，请检查原密码！且注意新密码不能与原密码一致！");
+                                }
+                            }
+                        })
+                    }else{
+                        alert("两次新密码不一样！");
+
+                    }
+                })
+            }
+            updatePwd();
         })
     </script>
 </body>

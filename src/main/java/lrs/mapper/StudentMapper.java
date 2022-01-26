@@ -11,4 +11,6 @@ public interface StudentMapper {
 
 //    stu->class
     Integer queryClaIdByStuId(@Param("stu_id") Integer stu_id);
+
+    Integer updateStuPwd(Student student);
 }

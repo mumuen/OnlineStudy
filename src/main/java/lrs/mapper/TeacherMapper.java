@@ -9,4 +9,6 @@ public interface TeacherMapper {
     Integer querySchIdByTeaId(@Param("tea_id") Integer tea_id);
 
     Integer updateTeacher(Teacher teacher);
+
+    Integer updateTeaPwd(Teacher teacher);
 }

@@ -25,4 +25,7 @@
         update student set stu_tel=#{tel},stu_mail=#{mail},stu_sex=#{sex} where stu_id=#{id}
     </update>
 
+    <update id="updateStuPwd" parameterType="lrs.entity.Student">
+        update student set stu_pwd=#{pwd} where stu_id=#{id}
+    </update>
 </mapper>
