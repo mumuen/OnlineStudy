@@ -37,6 +37,7 @@ public class MaterialController {
     public String getMaterials(@PathVariable Integer cou_id, Model model){
         List<Material> materials = materialService.queryMatsByCouId(cou_id);
         model.addAttribute("materials",materials);
+
         return "materials";
     }
 
