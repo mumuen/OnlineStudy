@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.MaterialMapper">
+    <select id="queryMatsByCouId" resultType="lrs.entity.Material">
+        select mat_id,mat_name,mat_path,mat_size,mat_date from material where mat_id in(
+          select mat_id from cou_mat where cou_id=#{cou_id}
+        )
+    </select>
+
+</mapper>

@@ -86,43 +86,43 @@
 <body>
 
     <nav>
-        <div class="navbar_left clearfix" th:if="${session.user!=null}">
-            <img th:src="${session.school.sch_img_path}">
-            <span th:text="${session.school.sch_name}"></span>
+    <div class="navbar_left clearfix" th:if="${session.user!=null}">
+        <img th:src="${session.school.sch_img_path}">
+        <span th:text="${session.school.sch_name}"></span>
+    </div>
+    <div class="navbar_left clearfix" th:if="${session.user==null}">
+        <span>欢迎你！请先<a href="login.html">登录</a></span>
+    </div>
+    <div class="navbar_mid clearfix">
+        <ul>
+            <li><a href="/index">首页</a></li>
+            <li><a href="/stu_courses">我的课程</a></li>
+            <li><a href="/material">课程资料</a></li>
+            <li><a href="javascript:;">考试中心</a></li>
+            <li><a href="/profile">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="navbar_right clearfix" th:if="${session.user!=null}">
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+            <span class="iconfont">&#xe613;</span>
+            <span th:text="${session.user.name}"></span>
         </div>
-        <div class="navbar_left clearfix" th:if="${session.user==null}">
-            <span>欢迎你！请先<a href="login.html">登录</a></span>
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+            <span class="iconfont">&#xe646;</span>
+            <span th:text="${session.user.name}"></span>
         </div>
-        <div class="navbar_mid clearfix">
-            <ul>
-                <li><a href="/index">首页</a></li>
-                <li><a href="/stu_courses">我的课程</a></li>
-                <li><a href="/material">课程资料</a></li>
-                <li><a href="javascript:;">考试中心</a></li>
-                <li><a href="/profile">个人中心</a></li>
-            </ul>
+        <div class="navbar_right_right">
+            <span class="iconfont">&#xe892;</span>
+            <a th:href="@{/logout}">退出登录</a>
         </div>
-        <div class="navbar_right clearfix" th:if="${session.user!=null}">
-            <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
-                <span class="iconfont">&#xe613;</span>
-                <span th:text="${session.user.name}"></span>
-            </div>
-            <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
-                <span class="iconfont">&#xe646;</span>
-                <span th:text="${session.user.name}"></span>
-            </div>
-            <div class="navbar_right_right">
-                <span class="iconfont">&#xe892;</span>
-                <a th:href="@{/logout}">退出登录</a>
-            </div>
-        </div>
+    </div>
 
 
-    </nav>
+</nav>
 
     <main class="w">
         <div class="clearfix courses_box" th:if="${#arrays.length(courses)!=0}">
-            <a href="javascript:;" class="course_box" th:each="course:${courses}">
+            <a th:href="@{/material/}+${course.cou_id}" class="course_box" th:each="course:${courses}">
                 <img th:src="${course.cou_cover_path}" alt="">
                 <h3 th:text="${course.cou_name}"></h3>
                 <p th:text="${course.cou_info}"></p>
@@ -141,16 +141,9 @@
 
         </div>
 
-        <div  th:if="${#arrays.length(courses)==0}">你还没有课程！</div>
+        <div  th:if="${#arrays.length(courses)==0}">你还没有课程资料！</div>
     </main>
 
-    <script>
-        $(function () {
-
-
-
-        })
-    </script>
 </body>
 
 </html>

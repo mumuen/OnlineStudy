@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的课程</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+
+    <style>
+        .box_data {
+            width: 100%;
+            height: 66px;
+            line-height: 66px;
+            padding-left: 20px;
+            box-sizing: border-box;
+            font-size: 20px;
+            color: #131b26;
+        }
+
+        .box_data li {
+            float: left;
+        }
+
+        .box_data .data_num {
+            width: 50px;
+
+        }
+
+        .box_data .data_name {
+            width: 500px;
+        }
+
+        .box_data .data_size {
+            width: 100px;
+        }
+
+        .box_data .data_date {
+            width: 250px;
+        }
+
+        .box_data .data_download {
+            width: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+    <div class="navbar_left clearfix" th:if="${session.user!=null}">
+        <img th:src="${session.school.sch_img_path}">
+        <span th:text="${session.school.sch_name}"></span>
+    </div>
+    <div class="navbar_left clearfix" th:if="${session.user==null}">
+        <span>欢迎你！请先<a href="login.html">登录</a></span>
+    </div>
+    <div class="navbar_mid clearfix">
+        <ul>
+            <li><a href="/index">首页</a></li>
+            <li><a href="/stu_courses">我的课程</a></li>
+            <li><a href="/material">课程资料</a></li>
+            <li><a href="javascript:;">考试中心</a></li>
+            <li><a href="/profile">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="navbar_right clearfix" th:if="${session.user!=null}">
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+            <span class="iconfont">&#xe613;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+            <span class="iconfont">&#xe646;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_right">
+            <span class="iconfont">&#xe892;</span>
+            <a th:href="@{/logout}">退出登录</a>
+        </div>
+    </div>
+
+
+</nav>
+
+    <main class="w">
+        <ul class="box_data clearfix" th:if="${#arrays.length(materials)!=0}" th:each="material:${materials}">
+            <li class="data_num" th:text="${materialStat.index+1}+'.'"></li>
+            <li class="data_name" th:text="${material.mat_name}"></li>
+            <li class="data_size" th:text="${material.mat_size}"></li>
+            <li class="data_date" th:text="${material.mat_date}"></li>
+            <li class="data_download"><a th:href="${material.mat_path}" th:download="${material.mat_name}" target="_blank">下载</a></li>
+        </ul>
+
+        <ul class="box_data clearfix" th:if="${#arrays.length(materials)==0}">
+            您暂时还没有课程资料！
+        </ul>
+
+    </main>
+</body>
+
+</html>
