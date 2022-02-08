@@ -116,3 +116,7 @@ nav a {
 .navbar_right .navbar_right_right {
     font-size: 12px;
 }
+
+.hidden{
+    display:none;
+}

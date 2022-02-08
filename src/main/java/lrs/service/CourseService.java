@@ -16,4 +16,7 @@ public class CourseService {
         return courseMapper.queryCousByClaId(cla_id);
     }
 
+    public String queryCouNameById(Integer cou_id){
+        return courseMapper.queryCouNameById(cou_id);
+    }
 }

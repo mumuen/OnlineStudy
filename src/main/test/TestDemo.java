@@ -1,8 +1,11 @@
 import com.alibaba.fastjson.JSON;
+import lrs.entity.Chapter;
 import lrs.entity.Course;
 import lrs.entity.Student;
+import lrs.mapper.ChapterMapper;
 import lrs.mapper.CourseMapper;
 import lrs.mapper.StudentMapper;
+import lrs.service.ChapterService;
 import lrs.utils.MD5Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:applicationContext.xml"})
+@ContextConfiguration(locations={"classpath:applicationContext.xml","classpath:springmvc.xml"})
 public class TestDemo {
     @Test
     public void testJosn(){
@@ -38,6 +41,20 @@ public class TestDemo {
         Student student = studentMapper.queryStuByIdPwd(120210102, pwd_md5);
         Integer integer = studentMapper.updateStudent(student);
         System.out.println(integer);
+    }
+
+
+    @Autowired
+    ChapterService chapterService;
+    @Autowired
+    ChapterMapper chapterMapper;
+    @Test
+    public void queryChapter(){
+        List<Chapter> chapters = chapterMapper.queryChasByCouId(100000000);
+        chapters.sort((a,b)->{
+            return a.getCha_seq()-b.getCha_seq();
+        });
+        System.out.println(chapters);
     }
 
 }

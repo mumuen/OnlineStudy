@@ -40,7 +40,8 @@ public class TestController {
         return "index";
     }
 
-
-
-
+    @RequestMapping("/video")
+    public String video(){
+        return "video";
+    }
 }

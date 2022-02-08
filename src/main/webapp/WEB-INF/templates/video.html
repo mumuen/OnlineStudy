@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+
+    <style>
+        .change_bar {
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .change_bar div {
+            float: left;
+            width: 500px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .green {
+            background-color: #00CC7E;
+        }
+
+
+
+        .video_details .box_video {
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .video_details .box_video video {
+            width: 800px;
+        }
+
+        .video_details .box_title {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            box-sizing: border-box;
+            font-size: 24px;
+            font-weight: 600;
+            padding-left: 100px;
+        }
+
+        .video_details .box_date {
+            width: 100%;
+            height: 25px;
+            line-height: 25px;
+            box-sizing: border-box;
+            padding-left: 100px;
+        }
+
+        .splitline {
+
+            width: 90%;
+            height: 0px;
+            margin: 0 auto;
+            border: 1px solid #e5e9ef;
+            margin-top: 20px;
+        }
+
+
+
+        .video_details .release_comment {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .video_details .release_comment textarea {
+            margin-left: 100px;
+            outline: none;
+            padding: 5px 10px;
+            resize: none;
+            border-radius: 5px;
+        }
+
+        .video_details .release_comment button {
+            /* display: inline-block; */
+            width: 84px;
+            height: 84px;
+            margin-left: 10px;
+            border: none;
+            color: #fff;
+            background-color: #00a1d6;
+            border-radius: 5px;
+        }
+
+        .video_details .box_comments {
+            margin-top: 20px;
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+
+        .video_details .box_comments div {
+            margin-top: 15px;
+        }
+
+        .comment_content {
+            text-indent: 2em;
+        }
+
+        .comment_info {
+            font-size: 14px;
+            color: #99a2aa;
+        }
+
+        .comment_replys {
+            margin: 15px 0;
+            padding: 0px 20px;
+        }
+
+
+
+        .video_que {
+
+            width: 800px;
+            margin: 30px 100px 0px 100px;
+        }
+
+        .que_head {
+            font-size: 20px;
+        }
+
+        .que_body {
+            padding: 0 20px;
+
+        }
+
+        .que_opt {
+            height: 40px;
+            line-height: 40px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+    <div class="navbar_left clearfix" th:if="${session.user!=null}">
+        <img th:src="${session.school.sch_img_path}">
+        <span th:text="${session.school.sch_name}"></span>
+    </div>
+    <div class="navbar_left clearfix" th:if="${session.user==null}">
+        <span>欢迎你！请先<a href="login.html">登录</a></span>
+    </div>
+    <div class="navbar_mid clearfix">
+        <ul>
+            <li><a href="/index">首页</a></li>
+            <li><a href="/stu_courses">我的课程</a></li>
+            <li><a href="/material">课程资料</a></li>
+            <li><a href="javascript:;">考试中心</a></li>
+            <li><a href="/profile">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="navbar_right clearfix" th:if="${session.user!=null}">
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+            <span class="iconfont">&#xe613;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+            <span class="iconfont">&#xe646;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_right">
+            <span class="iconfont">&#xe892;</span>
+            <a th:href="@{/logout}">退出登录</a>
+        </div>
+    </div>
+
+
+</nav>
+
+    <main class="w">
+    <div class="change_bar clearfix">
+        <div class="bar_left">视频详情</div>
+        <div class="bar_right green">随堂测验</div>
+    </div>
+
+    <div class="video_details hidden">
+
+        <div class="box_video">
+            <video th:src="@{/static/upload/videos/1.mp4}" loop controls preload="auto"></video>
+        </div>
+        <div class="box_title">java视频1-java的发展史</div>
+        <div class="box_date">
+            <span>发布于:&nbsp;&nbsp;</span><span>2021-01-01 00:00:00</span>
+        </div>
+        <div class="splitline"></div>
+        <div class="release_comment">
+            <textarea name="" id="" cols="80" rows="5" maxlength="255" placeholder="发表你的问题吧！"></textarea>
+            <button>发表评论</button>
+        </div>
+        <div class="splitline"></div>
+
+        <ul class="box_comments">
+            <li class="">
+                <div class="comment_user">
+                    <span class="iconfont">&#xe613;</span>
+                    <span>林荣盛:</span>
+                </div>
+                <div class="comment_content">
+                    java创建对象怎么创建了，我忘了！java上传文件我也忘记了！
+                    java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，我
+                </div>
+                <div class="comment_info">
+                    <span>发布于:2021-01-01 00:00:00</span>
+                    <span style="color:#0082f5">回复</span>
+                </div>
+
+                <ul class="comment_replys">
+                    <li>
+                        <div>
+                            <span class="iconfont">&#xe613;</span>
+                            <span>周腾明</span>
+                            <span style="color: #99a2aa;">2021-01-01 00:00:00</span>
+                        </div>
+                        <div style="text-indent: 2em;">
+                            java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，ava创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="iconfont">&#xe613;</span>
+                            <span>周腾明</span>
+                            <span style="color: #99a2aa;">2021-01-01 00:00:00</span>
+                        </div>
+                        <div style="text-indent: 2em;">
+                            java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，ava创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建
+                        </div>
+                    </li>
+                </ul>
+                <div class="splitline"></div>
+            </li>
+            <li class="">
+                <div class="comment_user">
+                    <span class="iconfont">&#xe613;</span>
+                    <span>林荣盛:</span>
+                </div>
+                <div class="comment_content">
+                    java创建对象怎么创建了，我忘了！java上传文件我也忘记了！
+                    java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，我
+                </div>
+                <div class="comment_info">
+                    <span>发布于:2021-01-01 00:00:00</span>
+                    <span style="color:#0082f5">回复</span>
+                </div>
+
+                <ul class="comment_replys">
+                    <li>
+                        <div>
+                            <span class="iconfont">&#xe613;</span>
+                            <span>周腾明</span>
+                            <span style="color: #99a2aa;">2021-01-01 00:00:00</span>
+                        </div>
+                        <div style="text-indent: 2em;">
+                            java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，ava创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="iconfont">&#xe613;</span>
+                            <span>周腾明</span>
+                            <span style="color: #99a2aa;">2021-01-01 00:00:00</span>
+                        </div>
+                        <div style="text-indent: 2em;">
+                            java创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建了，ava创建对象怎么创建了，我java创建对象怎么创建了，我java创建对象怎么创建
+                        </div>
+                    </li>
+                </ul>
+                <div class="splitline"></div>
+            </li>
+        </ul>
+
+    </div>
+
+
+
+    <div class="video_ques">
+        <div class="video_que">
+            <div class="que_head">
+                <span class="que_index">1.&nbsp;</span>SAS程序中过程步的引导语句是（ ）
+            </div>
+            <div class="que_body">
+                <div class="que_opt">
+                    <input type="radio" name="opt" id="opt_a">
+                    <label for="opt_a">
+                        <span class="opt_index">A.</span>
+                        <span class="opt_content">javascript</span>
+                    </label>
+                </div>
+                <div class="que_opt">
+                    <input type="radio" name="opt" id="opt_b">
+                    <label for="opt_b">
+                        <span class="opt_index">B.</span>
+                        <span class="opt_content">c++</span>
+                    </label>
+                </div>
+                <div class="que_opt">
+                    <input type="radio" name="opt" id="opt_c">
+                    <label for="opt_c">
+                        <span class="opt_index">C.</span>
+                        <span class="opt_content">java</span>
+                    </label>
+                </div>
+                <div class="que_opt">
+                    <input type="radio" name="opt" id="opt_d">
+                    <label for="opt_d">
+                        <span class="opt_index">D.</span>
+                        <span class="opt_content">python</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    <div></div>
+</main>
+
+<script>
+    $(function () {
+        function change() {
+            $(".bar_left").on("click", function () {
+                $(".video_details").show();
+                $(".bar_left").addClass("green");
+                $(".video_ques").hide();
+                $(".bar_right").removeClass("green");
+            })
+            $(".bar_right").on("click", function () {
+                $(".video_details").hide();
+                $(".bar_left").removeClass("green");
+                $(".video_ques").show();
+                $(".bar_right").addClass("green");
+            })
+        }
+        change();
+
+    })
+</script>
+</body>
+
+</html>

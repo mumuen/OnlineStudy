@@ -11,5 +11,9 @@
         )
     </select>
 
+    <select id="queryCouNameById" resultType="String">
+        select cou_name from course where cou_id=#{cou_id}
+    </select>
+
 
 </mapper>

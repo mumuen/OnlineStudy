@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.VideoMapper">
+
+    <select id="queryVidNameByChaId" resultType="String">
+        select vid_name from video where vid_id in (
+            select vid_id from cha_vid where cha_id=#{cha_id}
+        )
+    </select>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.ChapterMapper">
+
+    <!--用于根据课程id查询所有的章节
+        但章节里的视频名字还需要再根据章节id来查询再写入Chapter类的video_names
+     -->
+    <resultMap id="chapter_map" type="lrs.entity.Chapter">
+        <id property="cha_id" column="cha_id"></id>
+        <result property="cha_seq" column="cha_seq"></result>
+        <result property="cha_name" column="cha_name"></result>
+    </resultMap>
+    <select id="queryChasByCouId" resultMap="chapter_map">
+        select cha_id,cha_seq,cha_name from chapter where cha_id in(
+            select cha_id from cou_cha where cou_id=#{cou_id}
+        )
+    </select>
+
+</mapper>

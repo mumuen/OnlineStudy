@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的课程</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+
+    <style>
+        .course_name {
+            height: 80px;
+            line-height: 80px;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        .chapters {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 30px;
+            cursor: pointer;
+        }
+
+        .chapter .chapter_head {
+            height: 56px;
+            line-height: 56px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background-color: #f2f2f2;
+        }
+
+        .chapter .chapter_head div {
+            float: left;
+        }
+
+        .chapter .chapter_head .head_seq {
+            width: 80px;
+        }
+
+        .chapter .chapter_head .head_content {
+            width: 800px;
+        }
+
+
+
+        .chapter_body li {
+
+            height: 50px;
+            line-height: 50px;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .chapter_body li div {
+            float: left;
+
+        }
+
+        .chapter .chapter_body {
+            padding-left: 40px;
+            margin-bottom: 10px;
+
+        }
+
+        .chapter .chapter_body .body_icon {
+            width: 40px;
+            height: 30px;
+            font-size: 12px;
+            border: 1px solid #D9D9D9;
+            border-radius: 4px;
+            color: #999999;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        .chapter .chapter_body .body_seq {
+            margin: 0px 10px;
+        }
+
+        .chapter .chapter_body .body_content {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+    <div class="navbar_left clearfix" th:if="${session.user!=null}">
+        <img th:src="${session.school.sch_img_path}">
+        <span th:text="${session.school.sch_name}"></span>
+    </div>
+    <div class="navbar_left clearfix" th:if="${session.user==null}">
+        <span>欢迎你！请先<a href="login.html">登录</a></span>
+    </div>
+    <div class="navbar_mid clearfix">
+        <ul>
+            <li><a href="/index">首页</a></li>
+            <li><a href="/stu_courses">我的课程</a></li>
+            <li><a href="/material">课程资料</a></li>
+            <li><a href="javascript:;">考试中心</a></li>
+            <li><a href="/profile">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="navbar_right clearfix" th:if="${session.user!=null}">
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+            <span class="iconfont">&#xe613;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+            <span class="iconfont">&#xe646;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_right">
+            <span class="iconfont">&#xe892;</span>
+            <a th:href="@{/logout}">退出登录</a>
+        </div>
+    </div>
+
+
+</nav>
+
+    <main class="w">
+    <h3 class="course_name" th:text="${cou_name}"></h3>
+    <div class="chapters" th:if="${#arrays.length(chapters)!=0}">
+
+        <div class="chapter" th:each="chapter:${chapters}">
+            <div class="chapter_head clearfix">
+                <div class="head_seq" th:text="'第'+${chapter.cha_seq}+'章'"></div>
+                <div class="head_content" th:text="${chapter.cha_name}"></div>
+                <div class="head_icon iconfont" id="icon1">&#xf02aa;</div>
+                <div class="head_icon iconfont hidden" id="icon2">&#xf02a9;</div>
+
+            </div>
+
+            <ul class="chapter_body hidden">
+                <li class="clearfix" th:each="video_name:${chapter.video_names}">
+                    <div class="body_icon">视频</div>
+                    <div class="body_seq" th:text="${video_nameStat.index+1}+'.'"></div>
+                    <div class="body_content" th:text="${video_name}"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="chapters" th:if="${#arrays.length(chapters)==0}">
+        你的老师还没有为你的课程创建章节！
+    </div>
+</main>
+
+<script>
+    $(function () {
+        $(".chapter_head").on("click", function () {
+            $(this).siblings("ul").slideToggle(200);
+            $(this).children("#icon1").toggleClass("hidden");
+            $(this).children("#icon2").toggleClass("hidden");
+        })
+    })
+</script>
+</body>
+
+</html>

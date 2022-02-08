@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1642853634455') format('truetype');
+  src: url('iconfont.ttf?t=1643267940831') format('truetype');
 }
 
 .iconfont {
@@ -9,6 +9,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xiangxia:before {
+  content: "\f02a9";
+}
+
+.icon-xiangshang:before {
+  content: "\f02aa";
 }
 
 .icon-tuichu:before {
