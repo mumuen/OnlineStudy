@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.CommentMapper">
+    <resultMap id="comment_map" type="lrs.entity.Comment">
+        <id property="com_id1" column="com_id1"></id>
+        <result property="com_id2" column="com_id2"></result>
+        <result property="com_uid" column="com_uid"></result>
+        <result property="com_content" column="com_content"></result>
+        <result property="com_date" column="com_date"></result>
+    </resultMap>
+    <select id="queryComsByVidId" resultMap="comment_map">
+        select com_id1,com_id2,com_uid,com_content,com_date from comment where com_id1 in (
+            select com_id from vid_com where vid_id=#{vid_id}
+        )
+    </select>
+
+</mapper>

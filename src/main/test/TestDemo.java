@@ -1,11 +1,14 @@
 import com.alibaba.fastjson.JSON;
 import lrs.entity.Chapter;
+import lrs.entity.Comment;
 import lrs.entity.Course;
 import lrs.entity.Student;
 import lrs.mapper.ChapterMapper;
+import lrs.mapper.CommentMapper;
 import lrs.mapper.CourseMapper;
 import lrs.mapper.StudentMapper;
 import lrs.service.ChapterService;
+import lrs.service.CommentService;
 import lrs.utils.MD5Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,6 +58,14 @@ public class TestDemo {
             return a.getCha_seq()-b.getCha_seq();
         });
         System.out.println(chapters);
+    }
+
+    @Autowired
+    CommentService commentService;
+    @Test
+    public void test1(){
+        List<Comment> comments = commentService.queryComsByVidId(1);
+        System.out.println(comments);
     }
 
 }

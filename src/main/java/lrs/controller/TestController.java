@@ -1,7 +1,7 @@
 package lrs.controller;
 
-import com.alibaba.fastjson.JSON;
-import lrs.entity.Student;
+import lrs.msg.BaseResponse;
+import lrs.msg.StatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,11 +13,8 @@ public class TestController {
 
     @RequestMapping("/testJson")
     @ResponseBody
-    public Student test1(){
-        Student student = new Student(1,"123456","lrs","12345678910","2@2",1);
-
-
-        return student;
+    public BaseResponse  test1(){
+        return new BaseResponse(StatusCode.SUCCESS);
     }
 
     @RequestMapping(value = "/test",method = RequestMethod.GET)
@@ -25,10 +22,7 @@ public class TestController {
         return "success";
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String tologin(){
-        return "login";
-    }
+
 
     @RequestMapping("/index")
     public String index(){

@@ -139,10 +139,10 @@
             </div>
 
             <ul class="chapter_body hidden">
-                <li class="clearfix" th:each="video_name:${chapter.video_names}">
+                <li class="clearfix" th:each="video:${chapter.videos}">
                     <div class="body_icon">视频</div>
-                    <div class="body_seq" th:text="${video_nameStat.index+1}+'.'"></div>
-                    <div class="body_content" th:text="${video_name}"></div>
+                    <div class="body_seq" th:text="${videoStat.index+1}+'.'"></div>
+                    <a class="body_content" th:href="@{/video/}+${video.vid_id}" th:text="${video.vid_name}"></a>
                 </li>
             </ul>
         </div>

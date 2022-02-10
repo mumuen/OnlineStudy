@@ -27,4 +27,9 @@
         update teacher set tea_pwd=#{pwd} where tea_id=#{id}
     </update>
 
+    <select id="queryTeaNameById" resultType="String">
+
+        select tea_name from teacher where tea_id=#{tea_id}
+    </select>
+
 </mapper>

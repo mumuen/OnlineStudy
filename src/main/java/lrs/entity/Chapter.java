@@ -6,16 +6,16 @@ public class Chapter {
     private Integer cha_id;
     private Integer cha_seq;
     private String cha_name;
-    private List<String> video_names;
+    private List<Video> videos;
 
     public Chapter() {
     }
 
-    public Chapter(Integer cha_id, Integer cha_seq, String cha_name, List<String> video_names) {
+    public Chapter(Integer cha_id, Integer cha_seq, String cha_name, List<Video> videos) {
         this.cha_id = cha_id;
         this.cha_seq = cha_seq;
         this.cha_name = cha_name;
-        this.video_names = video_names;
+        this.videos = videos;
     }
 
 
@@ -49,12 +49,12 @@ public class Chapter {
         this.cha_name = cha_name;
     }
 
-    public List<String> getVideo_names() {
-        return video_names;
+    public List<Video> getVideos() {
+        return videos;
     }
 
-    public void setVideo_names(List<String> video_names) {
-        this.video_names = video_names;
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Chapter {
                 "cha_id=" + cha_id +
                 ", cha_seq=" + cha_seq +
                 ", cha_name='" + cha_name + '\'' +
-                ", video_names=" + video_names +
+                ", videos=" + videos +
                 '}';
     }
 }

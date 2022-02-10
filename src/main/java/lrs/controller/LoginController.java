@@ -4,7 +4,8 @@ import lrs.entity.Class;
 import lrs.entity.School;
 import lrs.entity.Student;
 import lrs.entity.Teacher;
-import lrs.msg.LoginMessage;
+import lrs.msg.BaseResponse;
+import lrs.msg.StatusCode;
 import lrs.service.ClassService;
 import lrs.service.SchoolService;
 import lrs.service.StudentService;
@@ -12,11 +13,7 @@ import lrs.service.TeacherService;
 import lrs.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,10 +32,15 @@ public class LoginController {
     @Autowired
     TeacherService teacherService;
 
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public LoginMessage login(@RequestParam("uid") Integer id, @RequestParam("upwd") String pwd, HttpServletRequest request){
+    public BaseResponse login(@RequestParam("uid") Integer id, @RequestParam("upwd") String pwd, HttpServletRequest request){
         String pwd_md5= MD5Utils.getPwd(pwd);
         String s=id+"";
         if(s.startsWith("1")){
@@ -57,10 +59,10 @@ public class LoginController {
         return "index";
     }
 
-    public LoginMessage studentLogin(Integer stu_id,String stu_pwd,HttpServletRequest request){
+    public BaseResponse studentLogin(Integer stu_id,String stu_pwd,HttpServletRequest request){
         Student stu=studentService.queryStuByIdPwd(stu_id,stu_pwd);
         if(stu==null){
-            return new LoginMessage("fail");
+            return new BaseResponse(StatusCode.FAIL);
         }
         Class cla=classService.queryClassByStuId(stu_id);
         School sch=schoolService.querySchByStuId(stu_id);
@@ -69,19 +71,19 @@ public class LoginController {
         session.setAttribute("class",cla);
         session.setAttribute("school",sch);
 
-        return new LoginMessage("success");
+        return new BaseResponse(StatusCode.SUCCESS);
     }
 
-    public LoginMessage teacherLogin(Integer tea_id,String tea_pwd,HttpServletRequest request){
+    public BaseResponse teacherLogin(Integer tea_id,String tea_pwd,HttpServletRequest request){
         Teacher tea =teacherService.queryTeaByIdPwd(tea_id,tea_pwd);
         if(tea==null){
-            return new LoginMessage("fail");
+            return new BaseResponse(StatusCode.FAIL);
         }
         School sch=schoolService.querySchByTeaId(tea_id);
         HttpSession session = request.getSession();
         session.setAttribute("user",tea);
         session.setAttribute("school",sch);
 
-        return new LoginMessage("success");
+        return new BaseResponse(StatusCode.SUCCESS);
     }
 }

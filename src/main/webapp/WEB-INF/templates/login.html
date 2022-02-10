@@ -194,7 +194,7 @@
                 dataType: "json",
                 data:  $("#form").serialize(),
                 success: function(result){
-                    if(result.msg=="success"){
+                    if(result.code==100){
                         window.location.href = '/index';
                     }else{
                         $("#uid").val("");

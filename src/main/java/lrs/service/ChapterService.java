@@ -1,12 +1,12 @@
 package lrs.service;
 
 import lrs.entity.Chapter;
+import lrs.entity.Video;
 import lrs.mapper.ChapterMapper;
 import lrs.mapper.VideoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -26,8 +26,8 @@ public class ChapterService {
         });
 
         for(Chapter chapter:chapters){
-            List<String> names = videoMapper.queryVidNameByChaId(chapter.getCha_id());
-            chapter.setVideo_names(names);
+            List<Video> vids = videoMapper.queryVidsByChaId(chapter.getCha_id());
+            chapter.setVideos(vids);
         }
         return chapters;
     }

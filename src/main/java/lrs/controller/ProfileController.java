@@ -3,9 +3,8 @@ package lrs.controller;
 
 import lrs.entity.Student;
 import lrs.entity.Teacher;
-import lrs.mapper.StudentMapper;
-import lrs.mapper.TeacherMapper;
-import lrs.msg.ProfileMessage;
+import lrs.msg.BaseResponse;
+import lrs.msg.StatusCode;
 import lrs.service.StudentService;
 import lrs.service.TeacherService;
 import lrs.utils.MD5Utils;
@@ -32,7 +31,7 @@ public class ProfileController {
 
     @ResponseBody
     @RequestMapping(value = "/update_profile",method = RequestMethod.POST)
-    public ProfileMessage updateStuProfile(@RequestParam("tel") String tel, @RequestParam("mail") String mail, @RequestParam("sex") Integer sex, HttpServletRequest request){
+    public BaseResponse updateStuProfile(@RequestParam("tel") String tel, @RequestParam("mail") String mail, @RequestParam("sex") Integer sex, HttpServletRequest request){
         HttpSession session = request.getSession();
 
         Object user = session.getAttribute("user");
@@ -51,12 +50,12 @@ public class ProfileController {
             teacherService.updateTeacher(tea);
         }
 
-        return new ProfileMessage("success");
+        return new BaseResponse(StatusCode.SUCCESS);
     }
 
     @PostMapping("/update_pwd")
     @ResponseBody
-    public ProfileMessage updatePwd(@RequestParam("old_pwd") String old_pwd,@RequestParam("new_pwd") String new_pwd,HttpServletRequest request){
+    public BaseResponse updatePwd(@RequestParam("old_pwd") String old_pwd,@RequestParam("new_pwd") String new_pwd,HttpServletRequest request){
         HttpSession session = request.getSession();
 
         Object user = session.getAttribute("user");
@@ -67,20 +66,20 @@ public class ProfileController {
         if(user instanceof Student) {
             Student stu=(Student)user;
             if(!stu.getPwd().equals(old)||old_pwd==new_pwd){
-                return new ProfileMessage("fail");
+                return new BaseResponse(StatusCode.FAIL);
             }
             stu.setPwd(pwd);
             studentService.updateStuPwd(stu);
-            return new ProfileMessage("success");
+            return new BaseResponse(StatusCode.SUCCESS);
         }else{
             Teacher tea=(Teacher)user;
 //            检查前端传来的原密码是否与登录用户的密码一致   或与新密码一致
             if(!tea.getPwd().equals(old)||old_pwd==new_pwd){
-                return new ProfileMessage("fail");
+                return new BaseResponse(StatusCode.FAIL);
             }
             tea.setPwd(pwd);
             teacherService.updateTeaPwd(tea);
-            return new ProfileMessage("success");
+            return new BaseResponse(StatusCode.SUCCESS);
         }
     }
 

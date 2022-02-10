@@ -4,9 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lrs.mapper.VideoMapper">
 
-    <select id="queryVidNameByChaId" resultType="String">
-        select vid_name from video where vid_id in (
+    <resultMap id="video_map" type="lrs.entity.Video">
+        <id property="vid_id" column="vid_id"></id>
+        <result property="vid_name" column="vid_name"></result>
+    </resultMap>
+
+    <select id="queryVidsByChaId" resultMap="video_map">
+        select vid_id,vid_name from video where vid_id in (
             select vid_id from cha_vid where cha_id=#{cha_id}
         )
+    </select>
+
+    <select id="queryVidById" resultType="lrs.entity.Video">
+        select vid_id,vid_name,vid_path,vid_cover_path,vid_up_date from video where vid_id=#{vid_id}
     </select>
 </mapper>

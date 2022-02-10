@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.QuestionMapper">
+        <select id="queryQuesByVidId" resultType="lrs.entity.Question">
+            select que_id,que_title,que_item_a,que_item_b,que_item_c,que_item_d,que_ans,que_score from question where que_id in(
+                select que_id from vid_que where vid_id=#{vid_id}
+            )
+        </select>
+
+</mapper>
