@@ -4,6 +4,7 @@ import lrs.entity.Comment;
 import lrs.mapper.CommentMapper;
 import lrs.mapper.StudentMapper;
 import lrs.mapper.TeacherMapper;
+import lrs.mapper.VideoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public class CommentService {
     StudentMapper studentMapper;
     @Autowired
     TeacherMapper teacherMapper;
+    @Autowired
+    VideoMapper videoMapper;
 
     public List<Comment> queryComsByVidId(Integer vid_id){
         List<Comment> comments = commentMapper.queryComsByVidId(vid_id);
@@ -52,5 +55,12 @@ public class CommentService {
         ArrayList<Comment> list = new ArrayList<>(map.values());
 
         return list;
+    }
+
+    public Integer insertComment(Integer vid_id,Comment comment){
+        Integer addNum = commentMapper.insertComment(comment);
+        Integer com_id=comment.getCom_id1();
+        videoMapper.insertVidCom(vid_id,com_id);
+        return addNum;
     }
 }

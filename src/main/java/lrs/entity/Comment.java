@@ -28,6 +28,13 @@ public class Comment {
     public Comment() {
     }
 
+    public Comment(Integer com_id2, Integer com_uid,  String com_content, String com_date) {
+        this.com_id2 = com_id2;
+        this.com_uid = com_uid;
+        this.com_content = com_content;
+        this.com_date = com_date;
+    }
+
     public Comment(Integer com_id1, Integer com_id2, Integer com_uid, String com_content, String com_date) {
         this.com_id1 = com_id1;
         this.com_id2 = com_id2;

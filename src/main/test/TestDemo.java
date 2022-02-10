@@ -64,8 +64,10 @@ public class TestDemo {
     CommentService commentService;
     @Test
     public void test1(){
-        List<Comment> comments = commentService.queryComsByVidId(1);
-        System.out.println(comments);
+        Comment comment = new Comment(1,120210101,"1212","2021");
+        Integer integer = commentService.insertComment(1, comment);
+        System.out.println(integer);
+        System.out.println(comment.getCom_id1());
     }
 
 }

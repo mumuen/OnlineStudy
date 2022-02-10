@@ -18,4 +18,8 @@
     <select id="queryVidById" resultType="lrs.entity.Video">
         select vid_id,vid_name,vid_path,vid_cover_path,vid_up_date from video where vid_id=#{vid_id}
     </select>
+
+    <insert id="insertVidCom">
+        insert into vid_com (vid_id,com_id) values(#{vid_id},#{com_id})
+    </insert>
 </mapper>

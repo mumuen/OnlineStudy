@@ -9,4 +9,6 @@ public interface VideoMapper {
     List<Video> queryVidsByChaId(@Param("cha_id") Integer cha_id);
 
     Video queryVidById(@Param("vid_id") Integer vid_id);
+
+    Integer insertVidCom(@Param("vid_id") Integer vid_id,@Param("com_id") Integer com_id);
 }

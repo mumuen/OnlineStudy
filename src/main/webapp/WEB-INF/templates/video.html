@@ -217,6 +217,7 @@
     </div>
 
     <div class="video_details">
+        <div class="hidden" th:text="${video.vid_id}" id="vid_id"></div>
 
         <div class="box_video">
             <video th:src="${video.vid_path}" loop controls preload="auto"></video>
@@ -227,13 +228,15 @@
         </div>
         <div class="splitline"></div>
         <div class="release_comment">
-            <textarea name="" id="" cols="80" rows="4" maxlength="255" placeholder="发表你的问题吧！"></textarea>
-            <button>发表评论</button>
+            <textarea cols="80" rows="4" maxlength="255" placeholder="发表你的问题吧！" id="comment_area"></textarea>
+            <button id="comment_btn">发表评论</button>
         </div>
         <div class="splitline"></div>
 
         <ul class="box_comments" th:if="${#arrays.length(comments)!=0}">
             <li th:each="comment:${comments}">
+                <div class="hidden"  th:text="${comment.com_id1}"></div>
+
                 <div class="comment_user">
                     <span class="iconfont" th:if="${#strings.startsWith(comment.com_uid,'1')}">&#xe613;</span>
                     <span class="iconfont" th:if="${#strings.startsWith(comment.com_uid,'2')}">&#xe646;</span>
@@ -341,6 +344,63 @@
         }
         respond();
 
+
+        function do_comment(){
+            $("#comment_btn").on("click",function(){
+                var content=$("#comment_area").val();
+                if(content.trim()==""){
+                    alert("请输入内容！")
+                    return;
+                }
+                $.ajax({
+                    url: "/addComment",
+                    type: "post",
+                    data: {
+                        "vid_id": $("#vid_id").text(),
+                        "content": content
+                    },
+                    dataType: "json",
+                    success: function(result){
+                        if(result.code==100){
+                            $("#comment_area").val("");
+                            alert("发表成功!");
+                            window.location.reload();
+                        }
+                    }
+                })
+            });
+        }
+        do_comment();
+
+
+        function do_reply(){
+            $(".box_comments li").on("click", ".reply_button", function () {
+                var content=$(".reply_area").val();
+                if(content.trim()==""){
+                    return;
+                }
+                var com_id2=$(this).parent().siblings().first().text();
+                $.ajax({
+                    url: "/addComment",
+                    type: "post",
+                    data: {
+                        "vid_id": $("#vid_id").text(),
+                        "com_id2":com_id2,
+                        "content": content
+                    },
+                    dataType: "json",
+                    success: function(result){
+                        if(result.code==100){
+                            // $(".reply_box").remove();
+                            alert("回复成功!");
+                            window.location.reload();
+
+                        }
+                    }
+                })
+            })
+        }
+        do_reply();
     })
 </script>
 </body>

@@ -16,4 +16,12 @@
         )
     </select>
 
+    <insert id="insertComment" parameterType="lrs.entity.Comment" useGeneratedKeys="true" keyProperty="com_id1" keyColumn="com_id1">
+        insert into comment (com_id2,com_uid,com_content,com_date) values(
+            #{com_id2},#{com_uid},#{com_content},#{com_date}
+        )
+    </insert>
+
+
+
 </mapper>
