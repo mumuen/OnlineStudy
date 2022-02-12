@@ -13,4 +13,6 @@ public interface TeacherMapper {
     Integer updateTeacher(Teacher teacher);
 
     Integer updateTeaPwd(Teacher teacher);
+
+    Integer deleteTeaCouByCouId(@Param("cou_id") Integer cou_id);
 }

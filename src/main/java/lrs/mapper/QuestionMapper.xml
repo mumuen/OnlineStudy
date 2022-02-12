@@ -8,5 +8,19 @@
                 select que_id from vid_que where vid_id=#{vid_id}
             )
         </select>
+    <select id="queryQueIdByVidId" resultType="Integer">
+        select que_id from vid_que where vid_id=#{vid_id}
+    </select>
+
+    <delete id="deleteQueByIdList" parameterType="java.util.List">
+        delete from question where que_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteQueById">
+        delete from question from que_id=#{que_id}
+    </delete>
 
 </mapper>

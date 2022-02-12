@@ -3,19 +3,22 @@ import lrs.entity.Chapter;
 import lrs.entity.Comment;
 import lrs.entity.Course;
 import lrs.entity.Student;
-import lrs.mapper.ChapterMapper;
-import lrs.mapper.CommentMapper;
-import lrs.mapper.CourseMapper;
-import lrs.mapper.StudentMapper;
+import lrs.mapper.*;
 import lrs.service.ChapterService;
 import lrs.service.CommentService;
+import lrs.utils.FileUtils;
+import lrs.utils.GlobalSetting;
 import lrs.utils.MD5Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -68,6 +71,22 @@ public class TestDemo {
         Integer integer = commentService.insertComment(1, comment);
         System.out.println(integer);
         System.out.println(comment.getCom_id1());
+    }
+
+    @Autowired
+    VideoMapper videoMapper;
+
+    @Autowired
+    CommentMapper commentMapper;
+    @Test
+    @Transactional
+    public void test2(){
+        File file = new File(GlobalSetting.SOURCE_PATH+"/static/images/course_cover/1.jpg");
+        System.out.println(file);
+        if(file.exists()&&file.isFile()){
+            file.delete();
+            System.out.println("------------");
+        }
     }
 
 }

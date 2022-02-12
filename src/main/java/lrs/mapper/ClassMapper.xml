@@ -15,4 +15,13 @@
     <select id="querySchIdByClaId"  resultType="Integer">
         select sch_id from school_class where cla_id=#{cla_id}
     </select>
+
+    <select id="queryClasByCouId" resultType="lrs.entity.Class">
+        select cla_id,cla_name from where cla_id in(
+            select cla_id from cla_cou where cou_id =#{cou_id}
+        )
+    </select>
+    <delete id="deleteClaCouByCouId">
+        delete from cla_cou where cou_id=#{cou_id}
+    </delete>
 </mapper>

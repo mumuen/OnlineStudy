@@ -15,5 +15,35 @@
         select cou_name from course where cou_id=#{cou_id}
     </select>
 
+    <select id="queryCousByTeaId" resultType="lrs.entity.Course">
+        select cou_id,cou_name,cou_tea_name,cou_info,cou_hour,cou_cover_path,cou_state from course
+        where cou_id in(
+            select cou_id from tea_cou where tea_id=#{tea_id}
+        )
+    </select>
+
+    <update id="endCourse">
+        update course set cou_state=0 where cou_id=#{cou_id}
+    </update>
+
+    <update id="activeCourse">
+        update course set cou_state=1 where cou_id=#{cou_id}
+    </update>
+
+    <delete id="deleteCourse">
+        delete from course where cou_id=#{cou_id}
+    </delete>
+
+    <delete id="deleteCouChaByCouId">
+        delete from cou_cha where cou_id=#{cou_id}
+    </delete>
+    <delete id="deleteCouMatByCouId">
+        delete from cou_mat where cou_id=#{cou_id}
+    </delete>
+
+    <select id="queryCouCoverByCouId" resultType="String">
+        select cou_cover_path from course where cou_id=#{cou_id}
+    </select>
+
 
 </mapper>

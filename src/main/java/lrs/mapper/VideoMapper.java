@@ -11,4 +11,12 @@ public interface VideoMapper {
     Video queryVidById(@Param("vid_id") Integer vid_id);
 
     Integer insertVidCom(@Param("vid_id") Integer vid_id,@Param("com_id") Integer com_id);
+
+    List<Integer> queryVidIdByChaId(@Param("cha_id") Integer cha_id);
+    String queryVidPathByVidId(@Param("vid_id") Integer vid_id);
+    String queryVidCoverPathByVidId(@Param("vid_id") Integer vid_id);
+    Integer deleteVidById(@Param("vid_id") Integer vid_id);
+    Integer deleteVidByIdList(List<Integer> vid_ids);
+
+    Integer deleteVidComByVidId(List<Integer> vid_ids);
 }

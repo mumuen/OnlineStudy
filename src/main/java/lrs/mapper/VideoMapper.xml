@@ -20,6 +20,37 @@
     </select>
 
     <insert id="insertVidCom">
-        insert into vid_com (vid_id,com_id) values(#{vid_id},#{com_id})
+        insert into vid_com (vid_id,com_id1) values(#{vid_id},#{com_id})
     </insert>
+
+    <select id="queryVidIdByChaId" resultType="Integer">
+        select vid_id from cha_vid where cha_id=#{cha_id}
+    </select>
+
+    <select id="queryVidPathByVidId" resultType="String">
+        select vid_path from video where vid_id=#{vid_id}
+    </select>
+
+    <select id="queryVidCoverPathByVidId" resultType="String">
+        select vid_cover_path from video where vid_id=#{vid_id}
+    </select>
+
+    <delete id="deleteVidById">
+        delete from video where vid_id=#{vid_id}
+    </delete>
+
+    <delete id="deleteVidByIdList" parameterType="java.util.List">
+        delete from video
+        where vid_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteVidComByVidId" parameterType="java.util.List">
+        delete from vid_com where vid_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

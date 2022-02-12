@@ -18,4 +18,21 @@
         )
     </select>
 
+    <delete id="deleteChaByCouId">
+        delete from chapter where cha_id in (
+            select cha_id from cou_cha where cou_id =#{cou_id}
+        )
+    </delete>
+
+    <select id="queryChaIdByCouId" resultType="Integer">
+        select cha_id from cou_cha where cou_id=#{cou_id}
+    </select>
+
+    <delete id="deleteChaVidByChaIdList" parameterType="java.util.List">
+        delete from cha_vid where cha_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
 </mapper>

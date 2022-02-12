@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
     <!-- 1.扫描controller包 -->
-    <context:component-scan base-package="lrs"/>
+
 
     <!--配置html视图解析器-->
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
@@ -59,6 +59,7 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+    <context:component-scan base-package="lrs.controller"/>
 
     <mvc:default-servlet-handler/>
 

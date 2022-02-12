@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+    <style>
+        .course_box {
+            position: relative;
+            float: left;
+            width: 250px;
+            height: 250px;
+            margin: 20px 41px 10px 41px;
+        }
+
+        .course_box img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .course_box .btn_box {
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .btn {
+            width: 80px;
+            border-style: none;
+            border-radius: 5px;
+            height: 35px;
+            background-color: coral;
+            color: #fff;
+            padding: 0 5px;
+        }
+
+        .course_box .not_open {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 135.41px;
+            line-height: 162.5px;
+            font-size: 16px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .create_course_box {
+            position: fixed;
+            top: 300px;
+            right: 100px;
+            cursor: pointer;
+        }
+
+        .create_course_box .icon1 {
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            background-color: #679eff;
+            border-radius: 50px;
+            text-align: center;
+            color: #fff;
+            font-size: 50px;
+            transition: all ease .5s;
+        }
+
+        .create_course_box .icon1:hover {
+            width: 120px;
+            height: 120px;
+            line-height: 120px;
+            border-radius: 60px;
+            font-size: 60px;
+        }
+
+        .tip_box {
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            margin-left: -180px;
+
+            width: 360px;
+            height: 180px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .tip_box h3 {
+            height: 130px;
+            line-height: 130px;
+        }
+
+
+        .bc {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .icon_jiao {
+            position: absolute;
+            display: inline-block;
+            width: 49px;
+            height: 28px;
+            background: url(/static/images/icon-jiao.png) center center / cover no-repeat;
+            font-size: 16px;
+            text-align: center;
+            line-height: 28px;
+            color: rgb(255, 255, 255);
+            top: -4px;
+            left: 10px;
+            font-weight: 500;
+            z-index: 1;
+        }
+
+        .shadow{
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, .3);
+        }
+        .blue{
+            color: #3a8bff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+    <div class="navbar_left clearfix" th:if="${session.user!=null}">
+        <img th:src="${session.school.sch_img_path}">
+        <span th:text="${session.school.sch_name}"></span>
+    </div>
+    <div class="navbar_left clearfix" th:if="${session.user==null}">
+        <span>欢迎你！请先<a href="login.html">登录</a></span>
+    </div>
+    <div class="navbar_mid clearfix">
+        <ul>
+            <li><a href="/index">首页</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的课程</a></li>
+            <li><a href="/stu_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">我的课程</a></li>
+            <li><a href="/tea_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">我的课程</a></li>
+            <li><a href="/material">课程资料</a></li>
+            <li><a href="javascript:;">考试中心</a></li>
+            <li><a href="/profile">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="navbar_right clearfix" th:if="${session.user!=null}">
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+            <span class="iconfont">&#xe613;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+            <span class="iconfont">&#xe646;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_right">
+            <span class="iconfont">&#xe892;</span>
+            <a th:href="@{/logout}">退出登录</a>
+        </div>
+    </div>
+
+
+</nav>
+
+    <main class="w clearfix">
+        <div class="course_box" th:each="course:${courses}" th:if="${#arrays.length(courses)!=0}">
+            <div class="course_head">
+                <img th:src="${course.cou_cover_path}" alt="">
+                <h3 th:text="${course.cou_name}"></h3>
+            </div>
+            <div class="not_open" th:if="${course.cou_state==0}">课程已结束</div>
+            <div class="icon_jiao">教</div>
+            <div class="hidden" th:text="${course.cou_id}"></div>
+            <div class="clearfix" style="margin:10px 0px;">
+                <span style="float:left;" th:text="${'教师:'+course.cou_tea_name}"></span>
+                <span style="float:right" th:text="${'课时:'+course.cou_hour+'学时'}"></span>
+            </div>
+            <div class="btn_box">
+                <button class="btn" th:id="'alter_btn'+${courseStat.index+1}">修改课程</button>
+                <button class="btn" th:if="${course.cou_state==1}" th:id="'end_btn'+${courseStat.index+1}">结课</button>
+                <button class="btn" th:if="${course.cou_state==0}" th:id="'active_btn'+${courseStat.index+1}">取消结课</button>
+                <button class="btn" th:id="'remove_btn'+${courseStat.index+1}">删除课程</button>
+            </div>
+        </div>
+        <div th:if="${#arrays.length(courses)==0}" style="font-size: 20px;">
+            您还没有创建课程！点击右边添加按钮创建吧！
+        </div>
+    </main>
+
+    <div class="create_course_box">
+        <div class="icon1 iconfont">&#xe607;</div>
+        <div class="" style="text-align: center;">添加课程</div>
+    </div>
+
+
+    <div class="bc bc_color hidden"></div>
+    <div class="tip_box hidden" id="remove_tip">
+        <h3>是否要删除当前课程？</h3>
+        <button class="btn" id="confirm_1">确定</button>
+        <button class="btn" id="cancel_1">取消</button>
+    </div>
+
+    <div class="tip_box hidden" id="end_tip">
+        <h3>是否要结束当前课程？</h3>
+        <button class="btn" id="confirm_2">确定</button>
+        <button class="btn" id="cancel_2">取消</button>
+    </div>
+
+    <div class="tip_box hidden" id="active_tip">
+        <h3>是否要重新激活当前课程？</h3>
+        <button class="btn" id="confirm_3">确定</button>
+        <button class="btn" id="cancel_3">取消</button>
+    </div>
+
+    <div class="hidden" id="cou_id_copy"></div>
+
+    <script>
+        $(function(){
+
+
+            function change(){
+                $("[id^='remove_btn']").on("click",function(){
+                    $("#remove_tip").toggle();
+                    $(".bc").eq(0).toggle();
+                    $("#cou_id_copy").text($(this).parent().siblings(".hidden").eq(0).text());
+                });
+
+                $("[id^='end_btn']").on("click",function(){
+                    $(".bc").eq(0).toggle();
+                    $("#end_tip").toggle();
+                    $("#cou_id_copy").text($(this).parent().siblings(".hidden").eq(0).text());
+                });
+
+                $("[id^='active_btn']").on("click",function(){
+                    $(".bc").eq(0).toggle();
+                    $("#active_tip").toggle();
+                    $("#cou_id_copy").text($(this).parent().siblings(".hidden").eq(0).text());
+                });
+
+
+                $("#cancel_1").on("click",function(){
+                    $(".bc").eq(0).toggle();
+                    $("#remove_tip").toggle();
+                    $("#cou_id_copy").text("");
+                });
+
+                $("#cancel_2").on("click",function(){
+                    $(".bc").eq(0).toggle();
+                    $("#end_tip").toggle();
+                    $("#cou_id_copy").text("");
+                });
+
+                $("#cancel_3").on("click",function(){
+                    $(".bc").eq(0).toggle();
+                    $("#active_tip").toggle();
+                    $("#cou_id_copy").text("");
+                });
+
+                $(".course_head").hover(function(){
+                    $(this).children("img").toggleClass("shadow");
+                    $(this).children("h3").toggleClass("blue");
+                })
+            }
+            change();
+
+            function remove_cou(){
+                $("#confirm_1").on("click",function(){
+
+                });
+            }
+            remove_cou();
+
+            function end_course(){
+                $("#confirm_2").on("click",function(){
+                    var cou_id=$("#cou_id_copy").text();
+                    $.ajax({
+                        url:"/tea_courses/endCourse/"+cou_id,
+                        type: "get",
+                        dataType: "json",
+                        success: function(result){
+                            if(result.code==100){
+                                alert("结课成功！");
+                                window.location.reload();
+                            }
+                            else{
+                                alert("结课失败！");
+                            }
+                        }
+                    })
+                });
+            }
+            end_course();
+
+            function active_course(){
+                $("#confirm_3").on("click",function(){
+                    var cou_id=$("#cou_id_copy").text();
+                    $.ajax({
+                        url:"/tea_courses/activeCourse/"+cou_id,
+                        type: "get",
+                        dataType: "json",
+                        success: function(result){
+                            if(result.code==100){
+                                alert("激活成功！");
+                                window.location.reload();
+                            }
+                            else{
+                                alert("激活失败！");
+                            }
+                        }
+                    })
+                });
+            }
+            active_course();
+
+            function delete_course(){
+                $("#confirm_1").on("click",function(){
+                    var cou_id=$("#cou_id_copy").text();
+                    $.ajax({
+                        url:"/tea_courses/deleteCourse/"+cou_id,
+                        type: "get",
+                        dataType: "json",
+                        success: function(result){
+                            if(result.code==100){
+                                alert("删除成功！");
+                                window.location.reload();
+                            }
+                            else{
+                                alert("删除失败！");
+                            }
+                        }
+                    })
+                });
+            }
+            delete_course();
+
+
+
+
+        })
+    </script>
+
+</body>
+
+</html>

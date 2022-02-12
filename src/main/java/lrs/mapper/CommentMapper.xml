@@ -12,7 +12,7 @@
     </resultMap>
     <select id="queryComsByVidId" resultMap="comment_map">
         select com_id1,com_id2,com_uid,com_content,com_date from comment where com_id1 in (
-            select com_id from vid_com where vid_id=#{vid_id}
+            select com_id1 from vid_com where vid_id=#{vid_id}
         )
     </select>
 
@@ -21,6 +21,17 @@
             #{com_id2},#{com_uid},#{com_content},#{com_date}
         )
     </insert>
+
+    <select id="queryComIdByVidId" resultType="Integer">
+        select com_id1 from vid_com  where vid_id=#{vid_id}
+    </select>
+
+    <delete id="deleteComByIdList" parameterType="java.util.List">
+        delete from comment where com_id1 in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 
 
 

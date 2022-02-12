@@ -32,4 +32,8 @@
         select tea_name from teacher where tea_id=#{tea_id}
     </select>
 
+    <delete id="deleteTeaCouByCouId">
+        delete from tea_cou where cou_id=#{cou_id}
+    </delete>
+
 </mapper>

@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface QuestionMapper {
     List<Question> queryQuesByVidId(@Param("vid_id") Integer vid_id);
+    List<Integer> queryQueIdByVidId(@Param("vid_id") Integer vid_id);
+    Integer deleteQueByIdList(List<Integer> que_ids);
+    Integer deleteQueById(@Param("que_id") Integer que_id);
 }

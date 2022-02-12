@@ -9,4 +9,16 @@
         )
     </select>
 
+    <delete id="deleteMatByCouId">
+        delete from material where mat_id in(
+            select mat_id from cou_mat where cou_id=#{cou_id}
+        )
+    </delete>
+
+    <select id="queryMatPathByCouId" resultType="String">
+        select mat_path from material where mat_id in(
+            select mat_id from cou_mat where cou_id=#{cou_id}
+        )
+    </select>
+
 </mapper>
