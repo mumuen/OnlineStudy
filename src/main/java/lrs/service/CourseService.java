@@ -52,7 +52,7 @@ public class CourseService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Boolean deleteCourse(Integer cou_id){
+    public Boolean deleteCourse(Integer cou_id,String path){
         //        查询出课程章节id
         List<Integer> cha_ids = chapterMapper.queryChaIdByCouId(cou_id);
 //        根据课程章节id查出所有视频
@@ -129,7 +129,7 @@ public class CourseService {
         all.addAll(vid_cover_paths);
         all.addAll(mat_paths);
         all.add(cou_cover_path);
-        FileUtils.deleteList(all);
+        FileUtils.deleteList(all,path);
         return n1>0&&n2>0&&n3>0;
     }
 }

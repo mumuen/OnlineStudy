@@ -81,12 +81,7 @@ public class TestDemo {
     @Test
     @Transactional
     public void test2(){
-        File file = new File(GlobalSetting.SOURCE_PATH+"/static/images/course_cover/1.jpg");
-        System.out.println(file);
-        if(file.exists()&&file.isFile()){
-            file.delete();
-            System.out.println("------------");
-        }
+
     }
 
 }

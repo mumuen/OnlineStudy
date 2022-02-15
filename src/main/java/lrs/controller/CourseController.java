@@ -2,16 +2,17 @@ package lrs.controller;
 
 import lrs.entity.Class;
 import lrs.entity.Course;
+import lrs.entity.School;
+import lrs.mapper.ClassMapper;
 import lrs.msg.BaseResponse;
 import lrs.msg.StatusCode;
+import lrs.service.ClassService;
 import lrs.service.CourseService;
 import lrs.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,6 +22,8 @@ import java.util.List;
 public class CourseController {
     @Autowired
     CourseService courseService;
+    @Autowired
+    ClassService classService;
 
 
     @RequestMapping(value = "/stu_courses")
@@ -57,10 +60,27 @@ public class CourseController {
 
     @RequestMapping("/tea_courses/deleteCourse/{cou_id}")
     @ResponseBody
-    public BaseResponse deleteCourse(@PathVariable("cou_id") Integer cou_id){
-        Boolean bol = courseService.deleteCourse(cou_id);
+    public BaseResponse deleteCourse(@PathVariable("cou_id") Integer cou_id,HttpServletRequest request){
+        String path = request.getServletContext().getRealPath("/");
+        Boolean bol = courseService.deleteCourse(cou_id,path);
         return bol?new BaseResponse(StatusCode.SUCCESS):new BaseResponse(StatusCode.FAIL);
     }
+
+    @RequestMapping("/cre_course")
+    public String toCreCourse(){
+        return "cre_course";
+    }
+
+    @RequestMapping(value = "/queryCla")
+    @ResponseBody
+    public  List<Class> queryClaByNameAndSchId(@RequestParam("cla_name") String cla_name, HttpServletRequest request,Model model){
+        HttpSession session = request.getSession();
+        School school = (School) session.getAttribute("school");
+        Integer sch_id = school.getSch_id();
+        List<Class> classes = classService.queryClaByClaNameAndSchId(cla_name, sch_id);
+        return classes;
+    }
+
 
 
 

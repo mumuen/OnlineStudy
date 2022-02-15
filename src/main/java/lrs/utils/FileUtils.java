@@ -84,10 +84,12 @@ public class FileUtils {
         return false;
     }
 
-    public static boolean deleteList (List<String> fileNames){
+    public static boolean deleteList (List<String> fileNames,String path){
+        fileNames.removeAll(GlobalSetting.DEFAULTIMGPATHS);
         try{
             for(String fileName:fileNames){
-                File file = new File(GlobalSetting.SOURCE_PATH+fileName);
+                File file = new File(path+fileName);
+                System.out.println(file);
                 if(file.exists()&&file.isFile()){
                     file.delete();
                 }

@@ -24,4 +24,12 @@
     <delete id="deleteClaCouByCouId">
         delete from cla_cou where cou_id=#{cou_id}
     </delete>
+
+    <select id="queryClaByClaNameAndSchId" resultMap="convertClass">
+        select cla_id,cla_name from (
+            select cla_id,cla_name from class where cla_id in(
+                select cla_id from school_class where sch_id=#{sch_id}
+            )
+        ) as c where cla_name like concat(#{cla_name},'%')
+    </select>
 </mapper>

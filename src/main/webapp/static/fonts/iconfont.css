@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1644563228116') format('truetype');
+  src: url('iconfont.ttf?t=1644840781493') format('truetype');
 }
 
 .iconfont {
@@ -21,6 +21,10 @@
 
 .icon-tianjia:before {
   content: "\e657";
+}
+
+.icon-guanbi:before {
+  content: "\e66d";
 }
 
 .icon-tuichu:before {

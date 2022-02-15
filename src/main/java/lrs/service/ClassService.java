@@ -26,6 +26,10 @@ public class ClassService {
         return queryClassById(class_id);
     }
 
+    public List<Class> queryClaByClaNameAndSchId(String cla_name,Integer sch_id){
+        return classMapper.queryClaByClaNameAndSchId(cla_name,sch_id);
+    }
+
 
 
 }
