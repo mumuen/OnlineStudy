@@ -10,6 +10,13 @@ public class Material {
     public Material() {
     }
 
+    public Material(String mat_name, String mat_path, String mat_size, String mat_date) {
+        this.mat_name = mat_name;
+        this.mat_path = mat_path;
+        this.mat_size = mat_size;
+        this.mat_date = mat_date;
+    }
+
     public Material(Integer mat_id, String mat_name, String mat_path, String mat_size, String mat_date) {
         this.mat_id = mat_id;
         this.mat_name = mat_name;

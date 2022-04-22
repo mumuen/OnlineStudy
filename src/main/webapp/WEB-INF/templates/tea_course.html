@@ -128,11 +128,23 @@
         .blue{
             color: #3a8bff;
         }
+
+        .course_head img{
+            width: 250px;
+            height: 135.4px;
+        }
+
+        .w a:link {
+            color: #333333;
+        }
+        .w a:visited {
+            color: #333333;
+        }
     </style>
 </head>
 
 <body>
-    <nav>
+<nav>
     <div class="navbar_left clearfix" th:if="${session.user!=null}">
         <img th:src="${session.school.sch_img_path}">
         <span th:text="${session.school.sch_name}"></span>
@@ -146,7 +158,9 @@
             <li><a href="/login" th:if="${session.user==null}">我的课程</a></li>
             <li><a href="/stu_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">我的课程</a></li>
             <li><a href="/tea_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">我的课程</a></li>
-            <li><a href="/material">课程资料</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的资料</a></li>
+            <li><a href="/material" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">课程资料</a></li>
+            <li><a href="/toTeaMaterial" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">课程资料</a></li>
             <li><a href="javascript:;">考试中心</a></li>
             <li><a href="/profile">个人中心</a></li>
         </ul>
@@ -171,10 +185,10 @@
 
     <main class="w clearfix">
         <div class="course_box" th:each="course:${courses}" th:if="${#arrays.length(courses)!=0}">
-            <div class="course_head">
+            <a class="course_head" th:href="${'/teachapter/'+course.cou_id}">
                 <img th:src="${course.cou_cover_path}" alt="">
                 <h3 th:text="${course.cou_name}"></h3>
-            </div>
+            </a>
             <div class="not_open" th:if="${course.cou_state==0}">课程已结束</div>
             <div class="icon_jiao">教</div>
             <div class="hidden" th:text="${course.cou_id}"></div>
@@ -194,7 +208,7 @@
         </div>
     </main>
 
-    <a th:href="@{/cre_course}" class="create_course_box">
+    <a th:href="@{/creCourse}" class="create_course_box">
         <div class="icon1 iconfont">&#xe607;</div>
         <div class="" style="text-align: center;">添加课程</div>
     </a>
@@ -269,13 +283,6 @@
                 })
             }
             change();
-
-            function remove_cou(){
-                $("#confirm_1").on("click",function(){
-
-                });
-            }
-            remove_cou();
 
             function end_course(){
                 $("#confirm_2").on("click",function(){

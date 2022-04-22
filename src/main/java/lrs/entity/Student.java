@@ -11,7 +11,13 @@ public class Student {
     public Student() {
     }
 
-    public Student(Integer id, String pwd, String name, String tel, String mail,Integer sex) {
+    public Student(Integer id, String pwd, String name) {
+        this.id = id;
+        this.pwd = pwd;
+        this.name = name;
+    }
+
+    public Student(Integer id, String pwd, String name, String tel, String mail, Integer sex) {
         this.id = id;
         this.pwd = pwd;
         this.name = name;

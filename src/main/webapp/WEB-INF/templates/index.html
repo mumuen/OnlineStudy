@@ -1,19 +1,151 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" th:href="@{/static/css/common.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/static/css/font.css}" type="text/css">
-    <script type="text/javascript" th:src="@{/static/js/jquery.mini.js}"></script>
-    <title>首页</title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的课程</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+
+    <style>
+        .outer {
+            width: 100%;
+            position: relative;
+        }
+
+        .img img {
+            width: 100%;
+            height: 280px;
+        }
+
+        .num {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            bottom: 20px;
+        }
+
+        .num li {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: darkgray;
+            color: #fff;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .btn {
+            position: absolute;
+            width: 20px;
+            height: 50px;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            top: 50%;
+            margin-top: -25px;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .left_btn {
+            left: 0;
+        }
+
+        .right_btn {
+            right: 0;
+        }
+
+        .current {
+            background-color: aquamarine !important;
+        }
+
+        .notice_box,
+        .advice_box {
+            margin-top: 10px;
+            width: 50%;
+            height: 320px;
+            float: left;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .notice_head {
+            font-size: 20px;
+            height: 40px;
+            line-height: 40px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .notice_item {
+            height: 48px;
+            line-height: 48px;
+            font-size: 20px;
+            border-bottom: 1px solid #E5E5E5;
+            box-sizing: border-box;
+        }
+
+        .notice_item div {
+            float: left;
+        }
+
+        .notice_item .ball {
+            color: #cca84d;
+            width: 25px;
+        }
+
+        .notice_item .notice_title {
+            width: 360px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .notice_item .notice_date {
+            padding-left: 3px;
+            color: #999999;
+        }
+
+        .splitline {
+            width: 100%;
+            height: 0px;
+            margin: 0 auto;
+            border: 1px solid #e5e9ef;
+        }
+
+        .advice_box .advice_book {
+            padding: 10px;
+        }
+
+        .advice_box .advice_head {
+            height: 40px;
+            line-height: 40px;
+            font-size: 20px;
+            font-weight: 700;
+            color: red;
+            padding-left: 10px;
+        }
+
+
+
+        .advice_book .book_img {
+            float: left;
+            padding-left: 10px;
+            width: 250px;
+        }
+    </style>
 </head>
 
 <body>
-
-    <nav>
+<nav>
     <div class="navbar_left clearfix" th:if="${session.user!=null}">
         <img th:src="${session.school.sch_img_path}">
         <span th:text="${session.school.sch_name}"></span>
@@ -27,7 +159,9 @@
             <li><a href="/login" th:if="${session.user==null}">我的课程</a></li>
             <li><a href="/stu_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">我的课程</a></li>
             <li><a href="/tea_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">我的课程</a></li>
-            <li><a href="/material">课程资料</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的资料</a></li>
+            <li><a href="/material" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">课程资料</a></li>
+            <li><a href="/toTeaMaterial" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">课程资料</a></li>
             <li><a href="javascript:;">考试中心</a></li>
             <li><a href="/profile">个人中心</a></li>
         </ul>
@@ -49,14 +183,113 @@
 
 
 </nav>
-
 <main class="w">
-    <div>这是首页的内容！</div>
+    <div class="outer">
+
+        <ul class="img">
+            <li><a><img th:src="@{/static/images/indeximg/book1.jpg}"></a></li>
+            <li class="hidden"><a><img th:src="@{/static/images/indeximg/book2.jpg}"></a></li>
+            <li class="hidden"><a><img th:src="@{/static/images/indeximg/book3.jpg}"></a></li>
+            <li class="hidden"><a><img th:src="@{/static/images/indeximg/book4.jpg}"></a></li>
+        </ul>
+
+
+        <ul class="num">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+
+        <div class="left_btn btn hidden">&lt;</div>
+        <div class="right_btn btn hidden">&gt;</div>
+    </div>
+
+    <div class="notice_box">
+        <div class="notice_head">公告</div>
+        <div class="splitline"></div>
+        <div class="notice_item" th:each="notice:${notices}">
+            <div class="ball">● </div>
+            <div class="notice_title" th:text="${notice.not_title}"></div>
+            <div class="notice_date" th:text="${notice.not_date}"></div>
+        </div>
+
+    </div>
+
+    <div class="advice_box">
+        <div class="advice_head">推荐书籍</div>
+        <div class="advice_book">
+            <img th:src="@{/static/images/indeximg/book.jpg}" class="book_img">
+            <p class="book_info">
+                这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书籍这是推荐书籍书
+            </p>
+        </div>
+    </div>
 </main>
 
-
 <script>
+    function imgChange() {
+        /*定义位置：由于图片个数与下侧顺序按钮数量一致，可通过位置进行关联*/
+        var index = 0;
+        /*当鼠标放到顺序按钮上时：
+        1.将当前这个顺序按钮增加样式为红色背景
+        2.移除周围其他同级元素红色背景样式
+        3.获取当前顺序按钮的index
+        4.通过index获取该位置图片
+        5.一秒钟渐入该图片
+        6.一秒钟渐出其他相邻图片
+        7.防止移动过快导致的效果闪现，使用stop方法
+        */
+        $(".num li").mouseenter(function () {
+            $(this).addClass("current").siblings().removeClass("current");
+            index = $(this).index();
+            $(".img li").eq(index).stop().fadeIn(1000).siblings().stop().hide();
+        });
+        /*设置每一秒钟自动轮播：
+        1.获取当前位置序号：自加操作；当超过图片最大序号时序号设置为0
+        2.设置下侧顺序按钮及轮播图显示
+        */
+        var time = setInterval(move, 2000);
 
+        function move() {
+            index++;
+            if (index == 4) {
+                index = 0
+            }
+            $(".num li").eq(index).addClass("current").siblings().removeClass("current");
+            $(".img li").eq(index).stop().fadeIn(1000).siblings().stop().hide();
+        };
+        /*当鼠标划入、划出轮播图区域时：
+        1.划入时停止自动轮播
+        2.划出时继续自动轮播
+        */
+        $(".outer").hover(function () {
+                $(".btn").show();
+                clearInterval(time);
+            },
+            function () {
+                $(".btn").hide();
+                time = setInterval(move, 2000);
+            });
+        /*点击右侧按钮时执行*/
+        $(".right_btn").click(function () {
+            move();
+        });
+        /*点击左侧按钮时执行*/
+        function moveL() {
+            index--;
+            if (index == -1) {
+                index = 3
+            }
+            $(".num li").eq(index).addClass("current").siblings().removeClass("current");
+            $(".img li").eq(index).stop().fadeIn(1000).siblings().stop().hide();
+        }
+        $(".left_btn").click(function () {
+            moveL();
+        });
+    }
+    imgChange();
 </script>
 </body>
+
 </html>

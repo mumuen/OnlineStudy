@@ -33,4 +33,7 @@
     <select id="queryStuNameById" resultType="String">
         select stu_name from student where stu_id=#{stu_id}
     </select>
+    <insert id="addStudent" parameterType="lrs.entity.Student">
+        insert into student (stu_id,stu_pwd,stu_name,stu_state) values (#{id},#{pwd},#{name},1);
+    </insert>
 </mapper>

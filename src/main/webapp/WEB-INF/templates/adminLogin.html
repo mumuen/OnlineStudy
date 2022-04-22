@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+
+    <link rel="stylesheet" href="/static/css/common.css">
+    <script src="/static/js/jquery.mini.js"></script>
+
+    <style>
+        body {
+            background-color: #f2f4f7;
+        }
+
+        .login_box_big {
+            width: 900px;
+            height: 584px;
+            margin: 75px auto 0;
+            border-radius: 20px;
+            background-color: white;
+        }
+
+        .login_box_small {
+            width: 500px;
+            margin: 0px auto;
+            text-align: center;
+        }
+
+        .login_box_big h3 {
+            display: block;
+            height: 100px;
+            line-height: 80px;
+            font-size: 20px;
+            color: #000000;
+        }
+
+        .login_item {
+            position: relative;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .login_item input {
+            width: 70%;
+            height: 48px;
+            background: #f7f8fa;
+            border: 1px solid #E3E8F0;
+            outline: none;
+            font-size: 20px;
+            color: #181E33;
+            border-radius: 24px;
+            padding: 0 24px 0 54px;
+
+        }
+
+        .login_item input[type='button'] {
+            width: 85%;
+            height: 48px;
+            font-size: 20px;
+            color: #fff;
+            border-radius: 24px;
+            background-color: #6699ff;
+        }
+
+        .icon {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: no-repeat center;
+            background-size: cover;
+            vertical-align: center;
+        }
+
+        .icon_tel {
+            top: 15px;
+            left: 58px;
+            background-image: url('/static/images/login/icon-tel.png');
+        }
+
+        .icon_pwd {
+            top: 15px;
+            left: 58px;
+            background-image: url('/static/images/login/icon-password.png');
+        }
+
+        .icon_close_eye {
+            top: 15px;
+            right: 65px;
+            background-image: url('/static/images/login/icon-eye-close.png');
+        }
+
+        .icon_open_eye {
+            top: 15px;
+            right: 65px;
+            background-image: url('/static/images/login/icon-eye-open.png');
+        }
+
+
+        .login_item .left {
+            float: left;
+            margin-left: 40px;
+        }
+
+        .login_item .right {
+            float: right;
+            margin-right: 38px;
+        }
+
+        .split_line {
+            margin-top: 100px;
+            border-bottom: 1px #f3f3f3 solid;
+        }
+
+        p {
+            font-size: 12px;
+            color: #a8a8b3;
+        }
+    </style>
+</head>
+
+<body>
+<div class="login_box_big">
+
+    <div class="login_box_small">
+
+        <form method="post" id="form">
+            <h3 class="login_title">Sign in</h3>
+            <div class="login_item">
+                <div class="icon icon_tel"></div>
+                <input type="text" id="uid" name="admin_name" maxlength=9
+                       placeholder="账号">
+
+            </div>
+            <div class="login_item">
+                <div class="icon icon_pwd"></div>
+                <input type="password" id="upwd" name="admin_pwd" maxlength="16" placeholder="密码">
+                <div class="icon icon_close_eye"></div>
+
+            </div>
+            <div class="login_item">
+                <input type="button" id="btn" value="登录">
+            </div>
+
+        </form>
+
+        <div class="split_line"></div>
+
+        <div class="login_item" style='margin-top:50px'>
+            <p>登录即表示您同意&nbsp;&nbsp;<span style="color:#3a8bff">"隐私政策"</span>&nbsp;和&nbsp;<span
+                    style="color:#3a8bff">"用户协议"</span></p>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(function () {
+
+        function eye_change() {
+            var div = $('.icon_close_eye');
+            var flag = 1;
+            div.on('click', function () {
+                div.toggleClass('icon_open_eye');
+                var inputbox = div.siblings('input');
+
+                if (flag == 1) {
+                    inputbox.prop('type', 'text');
+                    flag = 0;
+                } else {
+                    inputbox.prop('type', 'password');
+                    flag = 1;
+                }
+            });
+        }
+        eye_change();
+
+
+
+        function login(){
+            $.ajax({
+                url: "/admin",
+                type: "post",
+                dataType: "json",
+                data:  $("#form").serialize(),
+                success: function(result){
+                    if(result.code==100){
+                        window.location.href = '/toAdmin';
+                    }else{
+                        $("#uid").val("");
+                        $("#upwd").val("");
+                        alert("用户名密码错误,请重新输入！");
+                    }
+                }
+            })
+        }
+
+        $("#btn").on("click",function (){
+
+            if($("#uid").val().trim()!=""&&$("#upwd").val().trim()!=""){
+                login();
+            }else{
+                alert("请输入用户名密码后再登录！");
+            }
+        })
+
+    })
+</script>
+</body>
+
+</html>

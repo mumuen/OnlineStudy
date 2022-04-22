@@ -19,4 +19,9 @@ public interface VideoMapper {
     Integer deleteVidByIdList(List<Integer> vid_ids);
 
     Integer deleteVidComByVidId(List<Integer> vid_ids);
+    Integer deleteVidComByVid(@Param("vid_id") Integer vid_id);
+
+    Integer insertVideo(Video video);
+
+
 }

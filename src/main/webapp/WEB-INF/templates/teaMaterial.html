@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的课程</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+    <style>
+        .course_box {
+            position: relative;
+            float: left;
+            width: 250px;
+            height: 250px;
+            margin: 20px 41px 10px 41px;
+        }
+
+        .course_box img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .course_box .btn_box {
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .btn {
+            width: 100%;
+            border-style: none;
+            border-radius: 5px;
+            height: 35px;
+            background-color: #679eff;
+            color: #fff;
+            padding: 0 5px;
+        }
+
+        .course_box .not_open {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 135.41px;
+            line-height: 162.5px;
+            font-size: 16px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .btn_box {
+            text-align: center;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body class="">
+<nav>
+    <div class="navbar_left clearfix" th:if="${session.user!=null}">
+        <img th:src="${session.school.sch_img_path}">
+        <span th:text="${session.school.sch_name}"></span>
+    </div>
+    <div class="navbar_left clearfix" th:if="${session.user==null}">
+        <span>欢迎你！请先<a href="login.html">登录</a></span>
+    </div>
+    <div class="navbar_mid clearfix">
+        <ul>
+            <li><a href="/index">首页</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的课程</a></li>
+            <li><a href="/stu_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">我的课程</a></li>
+            <li><a href="/tea_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">我的课程</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的资料</a></li>
+            <li><a href="/material" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">课程资料</a></li>
+            <li><a href="/toTeaMaterial" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">课程资料</a></li>
+            <li><a href="javascript:;">考试中心</a></li>
+            <li><a href="/profile">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="navbar_right clearfix" th:if="${session.user!=null}">
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+            <span class="iconfont">&#xe613;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+            <span class="iconfont">&#xe646;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_right">
+            <span class="iconfont">&#xe892;</span>
+            <a th:href="@{/logout}">退出登录</a>
+        </div>
+    </div>
+
+
+</nav>
+
+<main class="w clearfix">
+
+        <div class="course_box" th:each="course:${courses}" th:if="${#arrays.length(courses)!=0}">
+            <div class="hidden cou_id" th:text="${course.cou_id}"></div>
+            <img th:src="${course.cou_cover_path}" alt="">
+            <h3 th:text="${course.cou_name}"></h3>
+            <div class="not_open" th:if="${course.cou_state==0}">课程已结束</div>
+            <div class="btn_box">
+                <button class="btn">查看所有资料</button>
+            </div>
+        </div>
+        <h2 th:if="${#arrays.length(courses)==0}">您暂时还没有创建课程！</h2>
+
+</main>
+
+<script>
+    $(function(){
+        $(".btn").on("click",function(){
+            var cou_id=$(this).parent().siblings(".cou_id").text();
+            var cou_name=$(this).parent().siblings("h3").text();
+            window.location.href="/toTeaMaterials?cou_id="+cou_id+"&cou_name="+cou_name;
+        });
+    })
+</script>
+
+</body>
+
+</html>

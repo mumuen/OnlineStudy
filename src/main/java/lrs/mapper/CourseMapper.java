@@ -3,6 +3,7 @@ package lrs.mapper;
 import lrs.entity.Course;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface CourseMapper {
@@ -19,6 +20,15 @@ public interface CourseMapper {
 
     Integer deleteCouChaByCouId(@Param("cou_id") Integer cou_id);
     Integer deleteCouMatByCouId(@Param("cou_id") Integer cou_id);
+    Integer deleteCouMatByCouMat(@Param("cou_id") Integer cou_id,@Param("mat_id") Integer mat_id);
     String queryCouCoverByCouId(@Param("cou_id") Integer cou_id);
 
+    Integer insertCourse(Course course);
+
+    Integer updateCouCoverPathById(@Param("cou_id") Integer cou_id,@Param("cou_cover_path") String cou_cover_path);
+
+    Integer insertCouClaByClasAndCouId(HashMap<String,Object> map);
+    Integer insertCouMatByCouIdAndMatId(@Param("cou_id") Integer cou_id,@Param("mat_id") Integer mat_id);
+
+    Integer insertCouChaByCouIdAndChaId(@Param("cou_id") Integer cou_id,@Param("cha_id") Integer cha_id);
 }

@@ -18,7 +18,7 @@
         }
 
         .cre_head {
-            position:relative;
+            position: relative;
             height: 60px;
             line-height: 60px;
             margin: 0 30px;
@@ -27,19 +27,16 @@
             color: #131B26;
         }
 
-        .cre_head div{
+        .cre_head div {
             position: absolute;
             top: 0px;
 
             right: 40px;
         }
 
-
-
         .cre_body {
             position: relative;
         }
-
 
         .item input {
             width: 600px;
@@ -188,7 +185,6 @@
             margin-right: 10px;
         }
 
-
         .cla_names .icon {
             width: 20px;
             height: 20px;
@@ -220,6 +216,17 @@
             background-color: #f5f5f6;
             color: #315efb;
         }
+
+        .shortselect {
+            background: #fff;
+            height: 30px;
+            width: 60px;
+            line-height: 30px;
+            border: 1px solid #e1e1e5;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -238,7 +245,9 @@
             <li><a href="/login" th:if="${session.user==null}">我的课程</a></li>
             <li><a href="/stu_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">我的课程</a></li>
             <li><a href="/tea_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">我的课程</a></li>
-            <li><a href="/material">课程资料</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的资料</a></li>
+            <li><a href="/material" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">课程资料</a></li>
+            <li><a href="/toTeaMaterial" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">课程资料</a></li>
             <li><a href="javascript:;">考试中心</a></li>
             <li><a href="/profile">个人中心</a></li>
         </ul>
@@ -284,8 +293,17 @@
         </div>
         <div class="cou_cla">
             <span>输入班级</span>
+            <span id="cla_id1" class="hidden"></span>
             <input type="text" id="input_cla" placeholder="请输入班级名称" maxlength="7">
             <button class="btn" id="add_btn">添加</button>
+
+            <span style="margin-left: 170px;">课时&nbsp;&nbsp;</span>
+            <select name="bbxb" id="selecter" class="shortselect">
+                <option value="24" selected="selected">24</option>
+                <option value="48">48</option>
+                <option value="64">64</option>
+            </select>
+            <span>学时</span>
         </div>
         <div class="cla_names">
             <div class="cla_names_head">已添加班级</div>
@@ -300,7 +318,7 @@
         <div class="cou_cover">
             <div class="cover_box">课程封面</div>
             <div class="img_box"><img id="up_img" th:src="@{/static/images/course_cover/1.jpg}" alt=""></div>
-            <input type="file" id="file" class="hidden">
+            <input type="file" id="file" class="hidden" name="file">
             <button class="btn" id="up_btn">上传图片</button>
         </div>
         <div class="imgs_box">
@@ -344,7 +362,7 @@
                 var filePath = $(this).val(), //获取到input的value，里面是文件的路径
                     fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase(),
                     src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
-                console.log(this.files);
+
                 // 检查是否是图片
                 if (!fileFormat.match(/.png|.jpg|.jpeg/)) {
                     alert('上传错误,文件格式必须为：png/jpg/jpeg');
@@ -355,11 +373,12 @@
             });
 
             $(".imgs_box_sun img").on("click", function () {
-                var path = $(this).prop("src");
+                var path = $(this).attr("src");
                 console.log(path);
-                $("#up_img").prop("src", path);
+                $("#up_img").attr("src", path);
             })
         }
+
         img_change();
 
 
@@ -379,28 +398,34 @@
             });
 
         }
+
         search_change();
 
 
         function add_class_name() {
             $("#add_btn").on("click", function () {
                 var text = $.trim($("#input_cla").val());
+                var cla_id1 = $("#cla_id1").text();
                 if (text != "") {
-                    $(".cla_names_body").append("<div><span>" + text +
-                        "</span><span class='iconfont icon' style='margin-left:3px;'>&#xe66d;</span></div>");
+                    $(".cla_names_body").append("<div><span class='hidden'>" + cla_id1 + "</span><span>" + text +
+                        "</span><i class='iconfont icon' style='margin-left:3px;'>&#xe66d;</i></div>");
                     $("#input_cla").val("");
                 }
             })
         }
+
         add_class_name();
 
         function click_cla_name() {
             $(".search_clas").on("click", "li", function () {
-                var tx = $(this).text();
+                var tx = $(this).children().eq(0).text();
                 $("#input_cla").val(tx);
+                var cla_id1 = $(this).children().eq(1).text();
+                $("#cla_id1").text(cla_id1);
                 $(".search_clas").empty();
             })
         }
+
         click_cla_name();
 
         function remove_cla_name() {
@@ -408,14 +433,15 @@
                 $(this).parent().remove();
             })
         }
+
         remove_cla_name();
 
 
-        function query_claname(){
-            $("#input_cla").on("keydown",function(){
-                var timer=window.setInterval(function(){
-                    var tx=$.trim($("#input_cla").val());
-                    if(tx!=""&&tx.length>1){
+        function query_claname() {
+            $("#input_cla").on("keydown", function () {
+                var timer = window.setInterval(function () {
+                    var tx = $.trim($("#input_cla").val());
+                    if (tx != "" && tx.length > 1) {
                         $.ajax({
                             url: "/queryCla",
                             type: "get",
@@ -423,12 +449,12 @@
                                 "cla_name": tx
                             },
                             dataType: "json",
-                            success: function(result){
-                                if(result!=null){
+                            success: function (result) {
+                                if (result != null) {
                                     $(".search_clas").empty();
-                                    var htm="";
-                                    for(var i=0;i<result.length;i++){
-                                        htm+="<li>"+result[i].class_name+"</li>";
+                                    var htm = "";
+                                    for (var i = 0; i < result.length; i++) {
+                                        htm += "<li><span>" + result[i].class_name + "</span><span class='hidden'>" + result[i].class_id + "</span></li>";
                                     }
                                     window.clearInterval(timer);
                                     $(".search_clas").eq(0).append(htm);
@@ -437,11 +463,76 @@
                         })
 
                     }
-                },1000)
+                }, 1000)
             });
         }
+
         query_claname();
 
+        function create_course() {
+            $("#cre_btn").on("click", function () {
+                var cou_name = $.trim($("#cou_name").val());
+                var cou_tea_name = $.trim($("#cou_teacher").val());
+                var cou_info = $.trim($("#cou_info").val());
+                var cou_hour=$('#selecter option:selected') .val();//选中的值
+                if (cou_name == "") {
+                    alert("请填写课程名");
+                    return;
+                }
+                if (cou_tea_name == "") {
+                    alert("请填写老师名");
+                    return;
+                }
+                //将课程对应的班级添加到数组里传到后端
+                if($(".cla_names_body div").length==0){
+                    alert("请给课程添加上课班级！");
+                    return;
+                }
+
+                var clas=new Array();
+                for (var i = 0; i < $(".cla_names_body div").length; i++) {
+                    var class_id = $(".cla_names_body div").eq(i).children().eq(0).text();
+                    var class_name = $(".cla_names_body div").eq(i).children().eq(1).text();
+                    clas.push({'class_id':class_id,'class_name':class_name});
+                }
+
+                var formData = new FormData();
+                formData.append("cou_name",cou_name);
+                formData.append("cou_tea_name",cou_tea_name);
+                formData.append("cou_info",cou_info);
+                formData.append("cou_hour",cou_hour);
+                formData.append("classes",JSON.stringify(clas));
+                //如果上传了图片，则要网后端传文件，没有的话则上传默认路径
+                var file = $("#file")[0].files[0]; // 获取文件对象
+                if(file==null){
+                    var sr=$("#up_img").attr("src");
+                    formData.append("cou_cover_path",sr);
+                }else{
+                    formData.append("file",file);
+                }
+
+                $.ajax({
+                    url: "/creCourse",
+                    type: "post",
+                    data: formData,
+                    dataType: "json",
+                    processData: false,
+                    contentType: false,
+                    success:function(result){
+                        if(result.code==100){
+                            alert("添加课程成功！");
+                            document.location.reload();
+                        }else{
+                            alert("创建课程失败！");
+                        }
+                    }
+                })
+
+
+            });
+        }
+
+        create_course();
 
 
     })

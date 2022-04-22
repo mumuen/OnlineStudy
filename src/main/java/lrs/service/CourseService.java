@@ -1,14 +1,25 @@
 package lrs.service;
 
+import com.alibaba.fastjson.JSONArray;
+import lrs.entity.Class;
 import lrs.entity.Course;
 import lrs.mapper.*;
 import lrs.utils.FileUtils;
+import lrs.utils.GlobalSetting;
+import lrs.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CourseService {
@@ -132,4 +143,56 @@ public class CourseService {
         FileUtils.deleteList(all,path);
         return n1>0&&n2>0&&n3>0;
     }
+
+    @Transactional
+    public Boolean insertCourse(String cou_name
+            ,String cou_tea_name,String cou_info
+            ,String classes,String cou_cover_path,Integer cou_hour, MultipartFile file,HttpServletRequest request) throws IOException {
+
+
+        Object user = request.getSession().getAttribute("user");
+        Integer tea_id = UserUtils.getUserId(user);
+
+        List<Class> clas = JSONArray.parseArray(classes, Class.class);
+        UUID randomUUID = UUID.randomUUID();
+
+        String realPath = request.getServletContext().getRealPath(GlobalSetting.COU_COVER_PATH_HEAD);
+        String cover_path;
+
+        if(file!=null){
+            String originalFilename = file.getOriginalFilename();
+            String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+//            存储到本地服务器的路径（绝对路径）
+            String des_path=realPath+randomUUID+suffix;
+//            存储到数据库的路径 （相对路径）
+            cover_path=GlobalSetting.COU_COVER_PATH_HEAD+randomUUID+suffix;
+            File file1 = new File(des_path);
+            file.transferTo(file1);
+        }else{
+            cover_path=cou_cover_path;
+        }
+
+        Course course = new Course(cou_name, cou_tea_name, cou_info, cou_hour, cover_path, 1);
+        Integer n1 = courseMapper.insertCourse(course);
+
+        Integer cou_id=course.getCou_id();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("cou_id",cou_id);
+        map.put("list",clas);
+//        插入到 课程-班级
+        Integer n2 = courseMapper.insertCouClaByClasAndCouId(map);
+//          插入到 老师-课程
+        Integer n3 = teacherMapper.insertTeaCou(tea_id, cou_id);
+        return n1>0&&n2>0&&n3>0;
+    }
+
+    public Integer insertCourse(Course course){
+
+        return courseMapper.insertCourse(course);
+    }
+
+    public Integer insertCouClaByClasAndCouId(HashMap<String,Object> map){
+        return courseMapper.insertCouClaByClasAndCouId(map);
+    }
+
 }

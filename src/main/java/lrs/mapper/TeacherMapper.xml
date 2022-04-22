@@ -36,4 +36,8 @@
         delete from tea_cou where cou_id=#{cou_id}
     </delete>
 
+    <insert id="insertTeaCou">
+        insert into tea_cou (tea_id,cou_id) values (#{tea_id},#{cou_id})
+    </insert>
+
 </mapper>

@@ -35,4 +35,17 @@
         </foreach>
     </delete>
 
+    <insert id="insertChapter" parameterType="lrs.entity.Chapter" useGeneratedKeys="true" keyProperty="cha_id" keyColumn="cha_id">
+        insert into chapter (cha_seq,cha_name) values (#{cha_seq},#{cha_name})
+    </insert>
+
+
+    <insert id="insertChaVid">
+        insert into cha_vid (cha_id,vid_id) values(#{cha_id},#{vid_id})
+    </insert>
+
+    <delete id="deleteVidByChaAndVid">
+        delete from cha_vid where cha_id=#{cha_id} and vid_id=#{vid_id}
+    </delete>
+
 </mapper>

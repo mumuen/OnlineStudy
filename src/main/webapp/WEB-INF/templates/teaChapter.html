@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的课程</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+
+    <style>
+        .course_name {
+            height: 80px;
+            line-height: 80px;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        .chapters {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 30px;
+            cursor: pointer;
+        }
+
+        .chapter .chapter_head {
+            height: 56px;
+            line-height: 56px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background-color: #f2f2f2;
+        }
+
+        .chapter .chapter_head div {
+            float: left;
+        }
+
+        .chapter .chapter_head .head_seq {
+            width: 80px;
+        }
+
+        .chapter .chapter_head .head_content {
+            width: 800px;
+        }
+
+
+
+        .chapter_body li {
+            position:relative;
+            width:100%;
+            height: 50px;
+            line-height: 50px;
+
+            display: flex;
+            align-items: center;
+        }
+
+
+        .chapter .chapter_body_box {
+            padding-left: 40px;
+            margin-bottom: 10px;
+
+        }
+
+        .chapter .chapter_body .body_icon {
+            width: 40px;
+            height: 30px;
+            font-size: 12px;
+            border: 1px solid #D9D9D9;
+            border-radius: 4px;
+            color: #999999;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        .chapter .chapter_body .body_seq {
+            margin: 0px 10px;
+        }
+
+        .chapter .chapter_body .body_content {
+            margin-left: 10px;
+        }
+
+        .cre_chapter {
+            height: 50px;
+            padding-left: 30px;
+        }
+
+        .btn {
+            border-style: none;
+            border-radius: 5px;
+            height: 35px;
+            background-color: coral;
+            color: #fff;
+            padding: 0 10px;
+        }
+
+        .splitline {
+            width: 100%;
+            height: 0px;
+            margin: 0 auto;
+            border: 1px solid #e5e9ef;
+        }
+
+        .cre_chapter_box {
+            position: fixed;
+            top: 190px;
+            left: 50%;
+            margin-left: -250px;
+            width: 500px;
+            height: 250px;
+            background-color: #fff;
+            z-index: 1;
+        }
+
+        .cre_chapter_head {
+            height: 40px;
+            line-height: 40px;
+            padding-left: 10px;
+        }
+
+
+
+        .cre_chapter_name {
+            margin-top: 20px;
+            padding-left: 20px;
+            height: 80px;
+            line-height: 80px;
+        }
+
+        .cre_chapter_name input {
+            width: 300px;
+            height: 40px;
+            border: 1px solid #e1e1e5;
+            border-radius: 4px;
+            padding: 0 15px;
+            margin-left: 20px;
+        }
+
+        .cre_chapter_btn {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .bc_color {
+            background-color: rgba(0, 0, 0, .3);
+        }
+
+        .bc {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .w80 {
+            width: 80px;
+        }
+
+        input:focus {
+            outline: 0;
+            border-color: #3a8bff;
+        }
+
+        .tip{
+            height: 80px;
+            line-height: 80px;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .btn_delete {
+            position: absolute;
+            width: 80px;
+            right: 0;
+        }
+    </style>
+</head>
+
+<body class="">
+<nav>
+    <div class="navbar_left clearfix" th:if="${session.user!=null}">
+        <img th:src="${session.school.sch_img_path}">
+        <span th:text="${session.school.sch_name}"></span>
+    </div>
+    <div class="navbar_left clearfix" th:if="${session.user==null}">
+        <span>欢迎你！请先<a href="login.html">登录</a></span>
+    </div>
+    <div class="navbar_mid clearfix">
+        <ul>
+            <li><a href="/index">首页</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的课程</a></li>
+            <li><a href="/stu_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">我的课程</a></li>
+            <li><a href="/tea_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">我的课程</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的资料</a></li>
+            <li><a href="/material" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">课程资料</a></li>
+            <li><a href="/toTeaMaterial" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">课程资料</a></li>
+            <li><a href="javascript:;">考试中心</a></li>
+            <li><a href="/profile">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="navbar_right clearfix" th:if="${session.user!=null}">
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+            <span class="iconfont">&#xe613;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+            <span class="iconfont">&#xe646;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_right">
+            <span class="iconfont">&#xe892;</span>
+            <a th:href="@{/logout}">退出登录</a>
+        </div>
+    </div>
+
+
+</nav>
+
+<main class="w">
+    <h3 class="course_name" th:text="${cou_name}"></h3>
+    <div class="chapters" th:if="${#arrays.length(chapters)!=0}">
+        <div class="chapter" th:each="chapter:${chapters}">
+            <div class="chapter_head clearfix">
+                <div class="head_seq" th:text="'第'+${chapter.cha_seq}+'章'"></div>
+                <div class="head_content" th:text="${chapter.cha_name}"></div>
+                <div class="head_icon iconfont">&#xf02aa;</div>
+                <div class="head_icon iconfont hidden">&#xf02a9;</div>
+                <div class="head_id hidden" th:text="${chapter.cha_id}"></div>
+            </div>
+            <div class="chapter_body_box hidden">
+                <ul class="chapter_body">
+                    <li class="clearfix" th:each="video:${chapter.videos}">
+                        <div class="body_icon">视频</div>
+                        <div class="body_seq" th:text="${videoStat.index+1}+'.'"></div>
+                        <a class="body_content" th:href="@{/video/}+${video.vid_id}" th:text="${video.vid_name}"></a>
+                        <button class="btn btn_delete">删除</button>
+                        <div class="vid_id hidden" th:text="${video.vid_id}"></div>
+                    </li>
+                </ul>
+                <div class="cre_video">
+                    <button class="btn iconfont">&#xe607;&nbsp;添加视频</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chapters tip" th:if="${#arrays.length(chapters)==0}">
+        您还没有为你的课程创建章节！快去添加吧！
+    </div>
+    <div class="cre_chapter">
+        <button class="btn iconfont" id="btn1">&#xe607;&nbsp;添加章节</button>
+    </div>
+    <div class="hidden" id="next_seq" th:text="${#arrays.length(chapters)+1}"></div>
+    <div class="hidden" id="cou_id" th:text="${cou_id}"></div>
+
+</main>
+
+<div class="cre_chapter_box hidden">
+    <h3 class="cre_chapter_head">创建章节</h3>
+    <div class="splitline"></div>
+    <div class="cre_chapter_name">
+        <span>章节名称</span>
+        <input type="text">
+    </div>
+    <div class="cre_chapter_btn">
+        <button class="btn w80" id="btn2">创建</button>
+        <button class="btn w80" id="btn3" style="margin-left: 20px;">取消</button>
+    </div>
+</div>
+
+<div class="bc bc_color hidden"></div>
+<script>
+    $(function () {
+
+        function creVidBtn(){
+            $(".cre_video .btn").on("click",function(){
+                var cha_id=$(this).parents(".chapter_body_box").siblings(".chapter_head").children(".head_id").text();
+                window.location.href="/creVideo?cha_id="+cha_id;
+            });
+        }
+        creVidBtn();
+
+        function change() {
+            $(".chapter_head").on("click", function () {
+                $(this).siblings(".chapter_body_box").slideToggle(200);
+                $(this).children().eq(2).toggleClass("hidden");
+                $(this).children().eq(3).toggleClass("hidden");
+            })
+
+            $("#btn1").on("click", function () {
+                $(".bc").eq(0).toggle();
+                $(".cre_chapter_box").eq(0).toggle();
+            });
+
+            $("#btn3").on("click", function () {
+                $(".bc").eq(0).toggle();
+                $(".cre_chapter_box").eq(0).toggle();
+            });
+
+        }
+        change();
+
+        function creChapter(){
+            $("#btn2").on("click",function(){
+                var tx=$.trim($("input:text").eq(0).val());
+                if(tx==""){
+                    alert("请输入章节名字！");
+                    return;
+                }
+                $.ajax({
+                    url: "/creChapter",
+                    type: "get",
+                    data: {
+                        "cou_id": $("#cou_id").text(),
+                        "cha_name":tx,
+                        "cha_seq":$("#next_seq").text()
+                    },
+                    dataType: "json",
+                    success: function(result){
+                        if(result.code==100){
+                            alert("添加章节成功");
+                            document.location.reload();
+                        }else{
+                            alert("添加章节失败！")
+                        }
+                    }
+                })
+            });
+        }
+        creChapter();
+
+        function deleteVid(){
+            $(".btn_delete").on("click",function(){
+                var vid_id=$(this).siblings(".vid_id").text();
+                var cha_id=$(this).parents(".chapter").children(".chapter_head").children(".head_id").text();
+                $.ajax({
+                    url: "/deleteVid",
+                    type: "get",
+                    data: {
+                        "vid_id": vid_id,
+                        "cha_id":cha_id,
+                    },
+                    dataType: "json",
+                    success: function(result){
+                        if(result.code==100){
+                            alert("删除视频成功！");
+                            document.location.reload();
+                        }else{
+                            alert("删除视频失败！")
+                        }
+                    }
+                })
+            });
+        }
+        deleteVid();
+    })
+</script>
+</body>
+
+</html>

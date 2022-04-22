@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" style="overflow:hidden;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+    <style>
+        .head {
+            width: 100%;
+            height: 70px;
+            padding: 0 10px;
+            line-height: 70px;
+            font-size: 30px;
+            background-color: #485565;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .head .head_left {
+            float: left;
+        }
+
+        .head .head_right {
+            float: right;
+        }
+
+        .body {
+            width: 100%;
+            height: 640px;
+        }
+
+        .left_bar {
+            width: 200px;
+            height: 660px;
+            background-color: #485565;
+            font-size: 18px;
+            float: left;
+        }
+
+        .body .bar_item {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            color: #fff;
+            padding: 0 10px;
+            background-color: #2a3848;
+            box-sizing: border-box;
+        }
+
+        .body .bar_subitem {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 20px;
+            color: #fff;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .current {
+            background-color: skyblue !important;
+        }
+
+        .right_body {
+            float: right;
+            width: 1336px;
+            height: 660px;
+            overflow-y: scroll;
+
+        }
+
+        .title_box {
+            margin-top: 20px;
+            height: 60px;
+            line-height: 60px;
+            padding-left: 20px;
+
+        }
+
+        .content_box {
+            margin-top: 20px;
+            height: 100px;
+            line-height: 100px;
+            padding-left: 20px;
+            display: flex;
+            align-items: center
+        }
+
+        textarea {
+            outline: none;
+            resize: none;
+            border: 1px solid #e1e1e5;
+            border-radius: 4px;
+            padding: 10px 10px;
+            margin-left: 28px;
+        }
+
+        .input_title {
+            width: 600px;
+            height: 44px;
+            border: 1px solid #e1e1e5;
+            border-radius: 4px;
+            padding: 0 10px;
+            margin-left: 20px;
+        }
+
+        .btn_box_add {
+            margin-top: 20px;
+            padding-left: 112px;
+        }
+
+        .not_item {
+            height: 50px;
+            line-height: 50px;
+            background-color: #fff;
+        }
+
+        .not_item:nth-child(2n) {
+            background-color: #f7f8fa;
+        }
+
+        .not_item div {
+            float: left;
+        }
+
+        .not_item_index {
+            width: 30px;
+            text-align: center;
+        }
+
+        .not_item_title {
+            width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .not_item_content {
+            width: 900px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #ffb852;
+            margin-left: 5px;
+        }
+
+        .alter_box {
+            position: fixed;
+            top: 200px;
+            left: 50%;
+            margin-left: -200px;
+            z-index: 1;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .user_add_bar {
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            padding-left: 20px;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+
+        .shortselect {
+            background: #fff;
+            height: 30px;
+            width: 120px;
+            line-height: 30px;
+            border: 1px solid #e1e1e5;
+            border-radius: 4px;
+        }
+
+        .user_add_bar div {
+            float: left;
+            margin-left: 40px;
+        }
+
+        .user_alter_body {
+            margin-top: 10px;
+            margin-left: 30px;
+        }
+
+        .user_alter_body div {
+            height: 50px;
+        }
+
+        .input_box {
+            width: 250px;
+            height: 30px;
+            border: 1px solid #e1e1e5;
+            border-radius: 4px;
+            padding: 0 10px;
+            margin-left: 20px;
+        }
+
+        .user_alter_bar {
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+
+        .user_alter_bar div {
+            float: left;
+            margin-left: 40px;
+        }
+
+        .del_item {
+            height: 50px;
+            line-height: 50px;
+            background-color: #fff;
+        }
+
+        .del_item:nth-child(2n) {
+
+            background-color: #f8f8f8;
+        }
+
+        .del_item div {
+            float: left;
+        }
+
+        .del_item .del_item_index {
+            width: 70px;
+            text-align: center;
+        }
+
+        .del_item .del_item_uname {
+            width: 230px;
+
+        }
+
+        .del_item .del_item_uid {
+            width: 200px;
+        }
+
+        /*.bc_color {*/
+
+        /*}*/
+
+        .bc {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .3);
+        }
+    </style>
+</head>
+
+<body style="margin-top: 0;">
+
+<main>
+    <div class="head">
+        <div class="head_left">后台管理系统</div>
+        <div class="head_right">
+            <span>管理员:</span>
+            <span>admin</span>
+        </div>
+    </div>
+    <div class="body">
+        <div class="left_bar">
+            <div class="bar_item">用 户 管 理</div>
+            <div class="bar_subitem current" index="0">增加用户</div>
+            <div class="bar_subitem" index="1">删除用户</div>
+            <div class="bar_subitem" index="2">修改用户</div>
+            <div class="bar_item">公告管理</div>
+            <div class="bar_subitem" index="3">增加公告</div>
+            <div class="bar_subitem" index="4">删除公告</div>
+            <div class="bar_subitem" index="5">修改公告</div>
+        </div>
+        <div class="right_body">
+            <div id="user_add" class="">
+                <div class="user_add_bar">
+                    <div style="margin-left:10px;">
+                        <input type="radio" name="role1" id="role_t_1" checked><label for="role_t_1"
+                                                                                 style="margin-left: 5px;">教师</label>
+                        <input type="radio" name="role1" id="role_s_1" style="margin-left: 5px;"><label for="role_s_1"
+                                                                                                   style="margin-left: 5px;">学生</label>
+                    </div>
+                    <div>
+                        <span>选择学校:</span>
+                        <select  id="uni1" class="shortselect">
+                            <option value="深圳大学" selected="selected">深圳大学</option>
+                            <option value="江西农业大学">江西农业大学</option>
+                            <option value="南昌大学">南昌大学</option>
+                        </select>
+                    </div>
+                    <div>
+                        <span>选择班级:</span>
+                        <select  id="cla1" class="shortselect" disabled>
+                            <option value="计科1805班" selected="selected">计科1805班</option>
+                            <option value="计科1806班">计科1806班</option>
+                            <option value="计科1804班">计科1804班</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="user_alter_body">
+                    <div class="box_uname">
+                        <span>用户名:</span>
+                        <input type="tel" class="input_box" placeholder="请填写用户名">
+                    </div>
+                    <div class="box_id">
+                        <span>用户ID:</span>
+                        <input type="tel" class="input_box" maxlength="9" placeholder="请填写用户ID">
+                    </div>
+                    <div class="box_pwd">
+                        <span>用户密码:</span>
+                        <input type="tel" class="input_box" maxlength="9" placeholder="请填写用户密码">
+                    </div>
+
+                    <div class="box_save">
+                        <input type="button" value="添加用户" class="btn" id="btn1">
+                    </div>
+                </div>
+            </div>
+            <div id="user_delete" class="hidden">
+                <div class="user_add_bar">
+                    <div style="margin-left:10px;">
+                        <input type="radio" name="role2" id="role_t_2" checked><label for="role_t_2"
+                                                                                 style="margin-left: 5px;">教师</label>
+                        <input type="radio" name="role2" id="role_s_2" style="margin-left: 5px;"><label for="role_s_2" style="margin-left: 5px;">学生</label>
+                    </div>
+                    <div>
+                        <span>选择学校:</span>
+                        <select id="uni2"  class="shortselect">
+                            <option value="深圳大学" selected="selected">深圳大学</option>
+                            <option value="江西农业大学">江西农业大学</option>
+                            <option value="南昌大学">南昌大学</option>
+                        </select>
+                    </div>
+                    <div>
+                        <span>选择班级:</span>
+                        <select id="cla2"  class="shortselect" disabled>
+                            <option value="计科1805班" selected="selected">计科1805班</option>
+                            <option value="计科1806班">计科1806班</option>
+                            <option value="计科1804班">计科1804班</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn" id="btn2">点击查询</button>
+                    </div>
+                </div>
+                <div class="user_delete_body">
+                    <div class="del_item">
+                        <div class="del_item_index">1.</div>
+                        <div class="del_item_uname">林荣盛</div>
+                        <div class="del_item_uid">120210101</div>
+                        <div class="del_item_btn"><button class="btn">删除用户</button></div>
+                    </div>
+                    <div class="del_item">
+                        <div class="del_item_index">2.</div>
+                        <div class="del_item_uname">张三</div>
+                        <div class="del_item_uid">120210102</div>
+                        <div class="del_item_btn"><button class="btn">删除用户</button></div>
+                    </div>
+                    <div class="del_item">
+                        <div class="del_item_index">3.</div>
+                        <div class="del_item_uname">李四</div>
+                        <div class="del_item_uid">120210103</div>
+                        <div class="del_item_btn"><button class="btn">删除用户</button></div>
+                    </div>
+                    <div class="del_item">
+                        <div class="del_item_index">4.</div>
+                        <div class="del_item_uname">王五</div>
+                        <div class="del_item_uid">120210104</div>
+                        <div class="del_item_btn"><button class="btn">删除用户</button></div>
+                    </div>
+                    <div class="del_item">
+                        <div class="del_item_index">6.</div>
+                        <div class="del_item_uname">王二麻子</div>
+                        <div class="del_item_uid">120210105</div>
+                        <div class="del_item_btn"><button class="btn">删除用户</button></div>
+                    </div>
+                    <div class="del_item">
+                        <div class="del_item_index">6.</div>
+                        <div class="del_item_uname">方方</div>
+                        <div class="del_item_uid">120210106</div>
+                        <div class="del_item_btn"><button class="btn">删除用户</button></div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="user_alter" class="hidden">
+                <div class="user_alter_bar">
+                    <div>
+                        <span>选择学校:</span>
+                        <select id="uni3"  class="shortselect">
+                            <option value="深圳大学">深圳大学</option>
+                            <option value="江西农业大学">江西农业大学</option>
+                            <option value="南昌大学">南昌大学</option>
+                        </select>
+                    </div>
+                    <div>
+                        <span>输入用户ID:</span>
+                        <input type="text" name="" class="input_box">
+                    </div>
+                    <div><button class="btn" id="btn3">点击查询</button></div>
+                </div>
+                <div class="user_alter_body">
+                    <div class="box_sch">
+                        <span>学校:</span>
+                        <input type="tel" class="input_box" placeholder="请填写学校" style="margin-left: 40px;">
+                    </div>
+                    <div class="box_cla">
+                        <span>班级:</span>
+                        <input type="tel" class="input_box" placeholder="请填写班级" style="margin-left: 40px;">
+                    </div>
+                    <div class="box_uname">
+                        <span>用户名:</span>
+                        <input type="tel" class="input_box" placeholder="请填写用户名" style="margin-left: 24px;">
+                    </div>
+                    <div class="box_id">
+                        <span>用户ID:</span>
+                        <input type="tel" class="input_box" maxlength="9" placeholder="请填写用户ID"
+                               style="margin-left: 24px;">
+                    </div>
+                    <div class="box_sex">
+                        <span>性别:</span>
+                        <input type="radio" name="sex" id="sex_m_2" style="margin-left: 40px
+                            ;"><label for="sex_m_2" style="margin-left: 10px;">男</label>
+                        <input type="radio" name="sex" id="sex_w_2" style="margin-left: 10px;"><label for="sex_w_2"
+                                                                                                    style="margin-left: 10px;">女</label>
+                    </div>
+                    <div class="box_tel">
+                        <span>电话:</span>
+                        <input type="tel" class="input_box" placeholder="请填写你的电话" maxlength="11"
+                               style="margin-left: 40px;">
+                    </div>
+                    <div class="box_mail">
+                        <span>邮箱:</span>
+                        <input type="email" class="input_box"  placeholder="请填写你的邮箱"
+                               style="margin-left: 40px;">
+                    </div>
+                    <div class="box_save">
+                        <input type="button" value="更新账户信息" class="btn" id="btn4">
+                        <input type="button" value="重置密码"  class="btn" id="btn5">
+                    </div>
+                </div>
+            </div>
+            <div id="notice_add" class="hidden">
+                <div class="title_box">
+                    <span>公告标题:</span>
+                    <input type="text" class="input_title">
+                </div>
+                <div class="content_box">
+                    <span>公告内容</span>
+                    <textarea name="" id="not_content" cols="80" rows="6"></textarea>
+                </div>
+                <div class="btn_box_add">
+                    <button class="btn" id="btn6">点击增加</button>
+                </div>
+            </div>
+            <div id="notice_delete" class="hidden">
+                <div class="not_item">
+                    <div class="not_item_index">1.</div>
+                    <div class="not_item_title">4月14日更新公告</div>
+                    <div class="not_item_content">这是更新公告的内容！</div>
+                    <div class="not_item_btn"><button class="btn">删除</button></div>
+                </div>
+                <div class="not_item">
+                    <div class="not_id hidden"></div>
+                    <div class="not_item_index">2.</div>
+                    <div class="not_item_title">4月15日更新公告</div>
+                    <div class="not_item_content">这是更新公告的内容！</div>
+                    <div class="not_item_btn"><button class="btn">删除</button></div>
+                </div>
+                <div class="not_item">
+                    <div class="not_item_index">3.</div>
+                    <div class="not_item_title">4月16日更新公告</div>
+                    <div class="not_item_content">这是更新公告的内容！</div>
+                    <div class="not_item_btn"><button class="btn">删除</button></div>
+                </div>
+                <div class="not_item">
+                    <div class="not_item_index">4.</div>
+                    <div class="not_item_title">4月17日更新公告</div>
+                    <div class="not_item_content">这是更新公告的内容！</div>
+                    <div class="not_item_btn"><button class="btn">删除</button></div>
+                </div>
+                <div class="not_item">
+                    <div class="not_item_index">5.</div>
+                    <div class="not_item_title">4月18日更新公告</div>
+                    <div class="not_item_content">这是更新公告的内容！</div>
+                    <div class="not_item_btn"><button class="btn">删除</button></div>
+                </div>
+                <div class="not_item">
+                    <div class="not_item_index">6.</div>
+                    <div class="not_item_title">4月19日更新公告</div>
+                    <div class="not_item_content">这是更新公告的内容！</div>
+                    <div class="not_item_btn"><button class="btn">删除</button></div>
+                </div>
+
+            </div>
+            <div id="notice_alter" class="hidden">
+                <div class="not_item">
+                    <div class="not_item_index">1.</div>
+                    <div class="not_item_title">4月14日更新公告4月14日更新公告4月14日更新公告</div>
+                    <div class="not_item_content">这是更新公告的内容！</div>
+                    <div class="not_item_btn"><button class="btn">修改</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="alter_box hidden" id="alter_box">
+    <h3 class="alter_box_title" style="margin-top: 10px;">修改公告</h3>
+    <div class="alter_box_content">
+        <textarea style="margin: 20px 10px;" name=""  cols="70" rows="6"></textarea>
+    </div>
+    <div class="alter_box_btns">
+        <button class="btn" id="btn7">确定修改</button>
+        <button class="btn" id="btn8">取消修改</button>
+    </div>
+</div>
+
+<div class="bc hidden"></div>
+
+
+<script>
+    $(function () {
+        function change() {
+            $(".bar_subitem").mouseenter(function () {
+                $(this).addClass("current").siblings(".bar_subitem").removeClass("current");
+                var index = $(this).attr("index");
+                var cur = $(".right_body>div").eq(index);
+                cur.removeClass("hidden");
+                cur.siblings().addClass("hidden");
+            })
+        }
+        change();
+
+        function fn1(){
+            $("input:radio[name='role1']").on("change",function(){
+
+                if($("#role_s_1").prop("checked")){
+                    $("#cla1").removeAttr("disabled")
+                }else{
+                    $("#cla1").prop("disabled",'disabled');
+                }
+            });
+            $("input:radio[name='role2']").on("change",function(){
+
+                if($("#role_s_2").prop("checked")){
+                    $("#cla2").removeAttr("disabled")
+                }else{
+                    $("#cla2").prop("disabled",'disabled');
+                }
+            });
+        }
+        fn1();
+
+        function btn1(){
+            $("#btn1").on("click",function(){
+                alert("添加用户成功！");
+            })
+        }
+        btn1();
+        function btn2(){
+            $(".del_item .btn").on("click",function(){
+                alert("删除用户成功！");
+            })
+        }
+        btn2();
+        function btn4(){
+            $("#btn4").on("click",function(){
+                alert("更新用户成功！");
+            })
+        }
+        btn4();
+        function btn6(){
+            $("#btn6").on("click",function(){
+                alert("增加公告成功！");
+            })
+        }
+        btn6();
+        function btn7(){
+            $("#btn7").on("click",function(){
+                alert("修改公告成功！");
+            })
+        }
+        btn7();
+
+        function btn8(){
+            $("#btn8").on("click",function(){
+                $("#alter_box").hide();
+                $(".bc").hide();
+            })
+        }
+        btn8();
+
+        function delNot(){
+            $("#notice_delete .btn").on("click",function(){
+                alert("删除公告成功！");
+            });
+        }
+        delNot();
+
+        function altNot(){
+            $("#notice_alter .btn").on("click",function(){
+                $("#alter_box").show();
+                $(".bc").show();
+            });
+        }
+        altNot();
+    })
+</script>
+</body>
+
+</html>

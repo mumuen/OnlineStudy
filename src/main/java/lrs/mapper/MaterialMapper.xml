@@ -20,5 +20,16 @@
             select mat_id from cou_mat where cou_id=#{cou_id}
         )
     </select>
+    <delete id="deleteMatById">
+        delete from material where mat_id=#{mat_id}
+    </delete>
+
+    <select id="queryMatPathById" resultType="String">
+        select mat_path from material where mat_id=#{mat_id}
+    </select>
+
+    <insert id="insertMat" parameterType="lrs.entity.Material" useGeneratedKeys="true" keyColumn="mat_id" keyProperty="mat_id">
+        insert into material (mat_name,mat_path,mat_size,mat_date) values(#{mat_name},#{mat_path},#{mat_size},#{mat_date})
+    </insert>
 
 </mapper>

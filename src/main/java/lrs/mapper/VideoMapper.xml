@@ -53,4 +53,12 @@
             #{item}
         </foreach>
     </delete>
+
+    <insert id="insertVideo" parameterType="lrs.entity.Video" useGeneratedKeys="true" keyColumn="vid_id" keyProperty="vid_id">
+        insert into video (vid_name,vid_path,vid_cover_path,vid_up_date) values(#{vid_name},#{vid_path},#{vid_cover_path},#{vid_up_date})
+    </insert>
+
+    <delete id="deleteVidComByVid">
+        delete from vid_com where vid_id=#{vid_id}
+    </delete>
 </mapper>

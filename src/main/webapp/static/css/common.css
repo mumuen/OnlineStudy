@@ -117,11 +117,27 @@ nav a {
     font-size: 12px;
 }
 
-.hidden{
-    display:none;
-}
-
-
 .bc_color {
     background-color: rgba(0, 0, 0, .3);
+}
+
+.bc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .3);
+}
+.hidden {
+    display: none;
+}
+
+.btn {
+    border-style: none;
+    border-radius: 5px;
+    height: 35px;
+    background-color: coral;
+    color: #fff;
+    padding: 0 10px;
 }

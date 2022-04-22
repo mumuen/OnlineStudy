@@ -6,6 +6,8 @@ import lrs.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 public class TeacherService {
     @Autowired
@@ -23,4 +25,7 @@ public class TeacherService {
         return teacherMapper.updateTeaPwd(teacher);
     }
 
+    public Integer insertTeaCou(Integer tea_id,Integer cou_id){
+        return teacherMapper.insertTeaCou(tea_id,cou_id);
+    }
 }

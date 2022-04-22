@@ -12,6 +12,15 @@ public class Course {
     public Course() {
     }
 
+    public Course(String cou_name, String cou_tea_name, String cou_info, Integer cou_hour, String cou_cover_path, Integer cou_state) {
+        this.cou_name = cou_name;
+        this.cou_tea_name = cou_tea_name;
+        this.cou_info = cou_info;
+        this.cou_hour = cou_hour;
+        this.cou_cover_path = cou_cover_path;
+        this.cou_state = cou_state;
+    }
+
     public Course(Integer cou_id, String cou_name, String cou_tea_name, String cou_info, Integer cou_hour, String cou_cover_path, Integer cou_state) {
         this.cou_id = cou_id;
         this.cou_name = cou_name;

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的课程</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font.css}">
+    <script th:src="@{/static/js/jquery.mini.js}"></script>
+
+    <style>
+        .materials_box li {
+            height: 45px;
+            line-height: 45px;
+            background-color: #f7f8fa;
+        }
+
+        .materials_box li:nth-child(2n-1) {
+            background-color: #fff;
+        }
+
+        .materials_box li div {
+            display: inline-block;
+        }
+
+
+        .material_index {
+            text-align: center;
+            width: 30px;
+        }
+
+        .material_name {
+
+            width: 600px;
+        }
+
+        .material_size {
+            width: 70px;
+        }
+
+        .material_date {
+            width: 200px;
+        }
+
+        .btn {
+            width: 80px;
+            border-style: none;
+            border-radius: 5px;
+            height: 35px;
+            background-color: coral;
+            color: #fff;
+            padding: 0 5px;
+        }
+
+        h2 {
+            background-color: #f7f8fa;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .splitline {
+            width: 100%;
+            height: 0px;
+            margin: 0 auto;
+            border: 1px solid #e5e9ef;
+        }
+
+        .info_box {
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            margin-left: -180px;
+            width: 360px;
+            height: 180px;
+            background-color: #fff;
+            z-index: 1;
+        }
+
+        .info_box .info {
+            box-sizing: border-box;
+            height: 130px;
+            padding: 30px 20px;
+            font-weight: 600;
+        }
+
+        .info_box .btn_box {
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<nav>
+    <div class="navbar_left clearfix" th:if="${session.user!=null}">
+        <img th:src="${session.school.sch_img_path}">
+        <span th:text="${session.school.sch_name}"></span>
+    </div>
+    <div class="navbar_left clearfix" th:if="${session.user==null}">
+        <span>欢迎你！请先<a href="login.html">登录</a></span>
+    </div>
+    <div class="navbar_mid clearfix">
+        <ul>
+            <li><a href="/index">首页</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的课程</a></li>
+            <li><a href="/stu_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">我的课程</a></li>
+            <li><a href="/tea_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">我的课程</a></li>
+            <li><a href="/login" th:if="${session.user==null}">我的资料</a></li>
+            <li><a href="/material" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">课程资料</a></li>
+            <li><a href="/toTeaMaterial" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">课程资料</a></li>
+            <li><a href="javascript:;">考试中心</a></li>
+            <li><a href="/profile">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="navbar_right clearfix" th:if="${session.user!=null}">
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'1')}">
+            <span class="iconfont">&#xe613;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_left" th:if="${#strings.startsWith(session.user.id,'2')}">
+            <span class="iconfont">&#xe646;</span>
+            <span th:text="${session.user.name}"></span>
+        </div>
+        <div class="navbar_right_right">
+            <span class="iconfont">&#xe892;</span>
+            <a th:href="@{/logout}">退出登录</a>
+        </div>
+    </div>
+
+
+</nav>
+<main class="w ">
+    <h2 th:text="${cou_name}"></h2>
+    <div class="splitline"></div>
+    <ul class="materials_box" th:if="${#arrays.length(materials)!=0}">
+        <li th:each="material:${materials}">
+            <div class="material_index" th:text="${materialStat.index+1}+'.'"></div>
+            <div class="material_name" th:text="${material.mat_name}"></div>
+            <div class="material_size" th:text="${material.mat_size}"></div>
+            <div class="material_date" th:text="${material.mat_date}"></div>
+            <button class="btn">删除</button>
+            <div class="material_id" style="display: none;" th:text="${material.mat_id}"></div>
+        </li>
+    </ul>
+    <ul class="materials_box" th:if="${#arrays.length(materials)==0}">
+        <li>当前课程还没有资料！</li>
+    </ul>
+    <div class="splitline"></div>
+    <div><button class="btn" style="margin-top: 10px;" id="add_mat">添加资料</button></div>
+</main>
+
+<div class="info_box hidden" id="add_box">
+    <div class="info">
+    </div>
+    <div class="btn_box">
+        <button class="btn" id="btn1">确定</button>
+        <button class="btn" id="btn2">取消</button>
+    </div>
+</div>
+<div class="info_box hidden" id="rem_box">
+    <div class="info"></div>
+    <div class="btn_box">
+        <button class="btn" id="btn3">确定</button>
+        <button class="btn" id="btn4">取消</button>
+    </div>
+</div>
+<div class="hidden" id="cou_id" th:text="${cou_id}"></div>
+<div class="hidden" id="temp_mat_id"></div>
+<div class="bc hidden"></div>
+<input type="file" name="" id="mat" class="hidden">
+
+<script>
+    $(function () {
+        function box_hidden() {
+            $("#btn2,#btn4").on("click", function () {
+                $(this).parents(".info_box").hide();
+                $(".bc").hide();
+            });
+        }
+        box_hidden();
+
+        function deleteMat(){
+            $(".materials_box .btn").on("click", function () {
+                var mat_id = $(this).siblings(".material_id").text();
+                $("#temp_mat_id").text(mat_id);
+                var mat_name = $(this).siblings(".material_name").text();
+                $(".bc").show();
+                $("#rem_box").show();
+                $("#rem_box").children(".info").text("是否要删除: " + mat_name + "?");
+            });
+
+            $("#btn3").on("click",function(){
+                var cou_id = $("#cou_id").text();
+                var mat_id=$("#temp_mat_id").text();
+                $.ajax({
+                    url: "/deleteMaterial",
+                    type: "get",
+                    data: {
+                        "cou_id": cou_id,
+                        "mat_id":mat_id,
+                    },
+                    dataType: "json",
+                    success: function(result){
+                        if(result.code==100){
+                            alert("删除材料成功！");
+                            document.location.reload();
+                        }else{
+                            alert("删除材料失败！")
+                        }
+                    }
+                })
+            })
+        }
+        deleteMat();
+
+
+        function addMat(){
+            $("#add_mat").on("click", function () {
+                $("#mat").click();
+            })
+            $("#mat").on("change", function () {
+                var mat_name = this.files[0].name;
+                var ext = mat_name.split('.')[mat_name.split('.').length - 1];
+                if (ext != "docx" && ext != "ppt" && ext != "zip" && ext != "doc" && ext != "txt") {
+                    alert("请上传docx、doc、ppt、zip、txt文件");
+                    return;
+                }
+                $("#add_box").show();
+                $("#add_box .info").text("是否要添加: " + mat_name + "?");
+            })
+
+            $("#btn1").on("click",function(){
+                var material=document.getElementById("mat").files[0];
+                var mat_size=getMatSize(material);
+                var cou_id = $("#cou_id").text();
+
+                var formData=new FormData();
+                formData.append("material",material);
+                formData.append("mat_size",mat_size);
+                formData.append("cou_id",cou_id);
+
+                $.ajax({
+                    url: "/uploadMaterial",
+                    type: "POST",
+                    data: formData,
+                    contentType: false, //必须false才会自动加上正确的Content-Type
+                    processData: false,  //必须false才会避开jQuery对 formdata 的默认处理
+                    enctype: 'multipart/form-data',
+                    success: function (result) {
+                        if(result.code==100){
+                            alert("上传材料成功！");
+                            document.location.reload();
+                        }else{
+                            alert("上传材料失败！")
+                        }
+                    },
+                    error: function (data) {
+                        console.log("error");
+                    }
+                })
+            })
+        }
+        addMat();
+
+        function getMatSize(file) {
+            var fileSize = Math.round(file.size / 1024);
+            var suffix = 'KB';
+            if (fileSize >= 1024) {
+                fileSize = Math.round(fileSize / 1024);
+                suffix = 'MB';
+                if(fileSize>=1024){
+                    fileSize = Math.round(fileSize / 1024);
+                    suffix='GB';
+                }
+            }
+            var mat_size = fileSize.toString();
+            mat_size += suffix;
+            return mat_size;
+        }
+
+    })
+</script>
+
+</body>
+
+</html>

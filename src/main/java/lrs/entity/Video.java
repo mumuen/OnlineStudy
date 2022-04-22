@@ -23,6 +23,13 @@ public class Video {
         this.vid_up_date = vid_up_date;
     }
 
+    public Video(String vid_name, String vid_path, String vid_cover_path, String vid_up_date) {
+        this.vid_name = vid_name;
+        this.vid_path = vid_path;
+        this.vid_cover_path = vid_cover_path;
+        this.vid_up_date = vid_up_date;
+    }
+
     public Integer getVid_id() {
         return vid_id;
     }

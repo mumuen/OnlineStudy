@@ -25,6 +25,11 @@ public class Chapter {
         this.cha_name = cha_name;
     }
 
+    public Chapter(Integer cha_seq, String cha_name) {
+        this.cha_seq = cha_seq;
+        this.cha_name = cha_name;
+    }
+
     public Integer getCha_id() {
         return cha_id;
     }

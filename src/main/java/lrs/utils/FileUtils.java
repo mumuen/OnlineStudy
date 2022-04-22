@@ -4,15 +4,7 @@ import java.io.File;
 import java.util.List;
 
 public class FileUtils {
-    /**
-     * 获取windows/linux的项目根目录
-     *
-     * @return
-     */
-    public static String getConTextPath() {
-        String projectPath = System.getProperty("user.dir");
-        return projectPath;
-    }
+
 
     /*判断文件是否存在*/
     public static boolean isExists(String filePath) {
@@ -89,7 +81,6 @@ public class FileUtils {
         try{
             for(String fileName:fileNames){
                 File file = new File(path+fileName);
-                System.out.println(file);
                 if(file.exists()&&file.isFile()){
                     file.delete();
                 }

@@ -195,6 +195,7 @@
                 data:  $("#form").serialize(),
                 success: function(result){
                     if(result.code==100){
+
                         window.location.href = '/index';
                     }else{
                         $("#uid").val("");

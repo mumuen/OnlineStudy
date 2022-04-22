@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lrs.mapper.NoticeMapper">
+
+    <select id="queryAllNotice" resultType="lrs.entity.Notice">
+        select not_id,not_title,not_content,not_date from notice order by not_id desc limit 6
+    </select>
+    <select id="queryAllNotice2" resultType="lrs.entity.Notice">
+        select not_id,not_title,not_content,not_date from notice
+    </select>
+    <insert id="addNotice" parameterType="lrs.entity.Notice" useGeneratedKeys="true" keyProperty="not_id" keyColumn="not_id">
+        insert into notice (not_title,not_content,not_date) values(#{not_title},#{not_content},#{not_date});
+    </insert>
+    <delete id="deleteNoticeById">
+        delete from notice where not_id=#{not_id}
+    </delete>
+</mapper>

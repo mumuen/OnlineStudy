@@ -45,5 +45,32 @@
         select cou_cover_path from course where cou_id=#{cou_id}
     </select>
 
+    <insert id="insertCourse" parameterType="lrs.entity.Course" useGeneratedKeys="true" keyColumn="cou_id" keyProperty="cou_id">
+        insert into Course (cou_name,cou_tea_name,cou_info,cou_hour,cou_cover_path,cou_state) values
+        (#{cou_name},#{cou_tea_name},#{cou_info},#{cou_hour},#{cou_cover_path},#{cou_state})
+    </insert>
+
+    <update id="updateCouCoverPathById">
+        update course set cou_cover_path=#{cou_cover_path} where cou_id=#{cou_id}
+    </update>
+
+    <insert id="insertCouClaByClasAndCouId" parameterType="java.util.HashMap">
+        insert into cla_cou (cla_id,cou_id) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.class_id},#{cou_id})
+        </foreach>
+    </insert>
+
+    <insert id="insertCouChaByCouIdAndChaId">
+        insert into cou_cha (cou_id,cha_id) values (#{cou_id},#{cha_id})
+    </insert>
+
+    <delete id="deleteCouMatByCouMat">
+        delete from cou_mat where cou_id=#{cou_id} and mat_id=#{mat_id}
+    </delete>
+
+    <insert id="insertCouMatByCouIdAndMatId">
+        insert into cou_mat (cou_id,mat_id) values(#{cou_id},#{mat_id })
+    </insert>
 
 </mapper>
