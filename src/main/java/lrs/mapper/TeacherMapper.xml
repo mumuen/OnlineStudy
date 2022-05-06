@@ -40,4 +40,14 @@
         insert into tea_cou (tea_id,cou_id) values (#{tea_id},#{cou_id})
     </insert>
 
+    <insert id="addTeacher" parameterType="lrs.entity.Teacher">
+        insert into teacher (tea_id,tea_pwd,tea_name,tea_state) values(#{id},#{pwd},#{name},1)
+    </insert>
+
+
+    <select id="queryTeasBySchId" resultMap="convertTeacher">
+        select tea_id,tea_pwd,tea_name,tea_tel,tea_mail,tea_sex from teacher where tea_id in(
+            select tea_id from school_tea where sch_id=#{sch_id}
+        )
+    </select>
 </mapper>

@@ -16,4 +16,5 @@ public interface ClassMapper {
     Integer deleteClaCouByCouId(@Param("cou_id") Integer cou_id);
 
     List<Class> queryClaByClaNameAndSchId(@Param("cla_name") String cla_name,@Param("sch_id") Integer sch_id);
+    Integer addClaStu(@Param("cla_id") Integer cla_id,@Param("stu_id") Integer stu_id);
 }

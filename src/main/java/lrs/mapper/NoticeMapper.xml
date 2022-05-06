@@ -16,4 +16,7 @@
     <delete id="deleteNoticeById">
         delete from notice where not_id=#{not_id}
     </delete>
+    <update id="updateNotice">
+        update notice set not_content=#{not_content} where not_id=#{not_id}
+    </update>
 </mapper>

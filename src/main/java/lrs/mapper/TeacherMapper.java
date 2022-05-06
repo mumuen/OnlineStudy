@@ -22,4 +22,6 @@ public interface TeacherMapper {
 
     Integer insertTeaCou(@Param("tea_id") Integer tea_id,@Param("cou_id") Integer cou_id);
 
+    Integer addTeacher(Teacher teacher);
+    List<Teacher> queryTeasBySchId(@Param("sch_id") Integer sch_id);
 }

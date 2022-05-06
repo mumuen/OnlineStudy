@@ -32,4 +32,7 @@
             )
         ) as c where cla_name like concat(#{cla_name},'%')
     </select>
+    <insert id="addClaStu">
+        insert into cla_stu (cla_id,stu_id) values (#{cla_id},#{stu_id})
+    </insert>
 </mapper>

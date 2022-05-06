@@ -64,7 +64,7 @@ public class CourseService {
 
     @Transactional(rollbackFor = Exception.class)
     public Boolean deleteCourse(Integer cou_id,String path){
-        //        查询出课程章节id
+//        查询出课程章节id
         List<Integer> cha_ids = chapterMapper.queryChaIdByCouId(cou_id);
 //        根据课程章节id查出所有视频
         ArrayList<Integer> vid_ids = new ArrayList<>();
@@ -85,21 +85,16 @@ public class CourseService {
         for(Integer vid_id:vid_ids){
             vid_cover_paths.add(videoMapper.queryVidCoverPathByVidId(vid_id));
         }
-
 //        根据视频id查出所有的题目id
         ArrayList<Integer> que_ids = new ArrayList<>();
         for(Integer vid_id:vid_ids){
             que_ids.addAll(questionMapper.queryQueIdByVidId(vid_id));
         }
-
-        //        先把所有的材料路径查询出来，后面要删除
+//        先把所有的材料路径查询出来，后面要删除
         List<String> mat_paths = materialMapper.queryMatPathByCouId(cou_id);
 
 //        课程封面路径，默认路径不能删
         String cou_cover_path=courseMapper.queryCouCoverByCouId(cou_id);
-
-
-
 //        删除课程
         Integer n1 = courseMapper.deleteCourse(cou_id);
 //        删除老师-课程
@@ -114,7 +109,6 @@ public class CourseService {
         if(cha_ids.size()>0){
             chapterMapper.deleteChaVidByChaIdList(cha_ids);
         }
-
 //        删除课程材料
         Integer n6 = materialMapper.deleteMatByCouId(cou_id);
 //        删除课程-材料
@@ -128,13 +122,10 @@ public class CourseService {
             videoMapper.deleteVidByIdList(vid_ids);
             videoMapper.deleteVidComByVidId(vid_ids);
         }
-
 //        当有题目时才删除所有题目 判空
         if(que_ids.size()>0){
             questionMapper.deleteQueByIdList(que_ids);
         }
-
-
         ArrayList<String> all = new ArrayList<>();
         all.addAll(vid_paths);
         all.addAll(vid_cover_paths);
@@ -148,17 +139,12 @@ public class CourseService {
     public Boolean insertCourse(String cou_name
             ,String cou_tea_name,String cou_info
             ,String classes,String cou_cover_path,Integer cou_hour, MultipartFile file,HttpServletRequest request) throws IOException {
-
-
         Object user = request.getSession().getAttribute("user");
         Integer tea_id = UserUtils.getUserId(user);
-
         List<Class> clas = JSONArray.parseArray(classes, Class.class);
         UUID randomUUID = UUID.randomUUID();
-
         String realPath = request.getServletContext().getRealPath(GlobalSetting.COU_COVER_PATH_HEAD);
         String cover_path;
-
         if(file!=null){
             String originalFilename = file.getOriginalFilename();
             String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
@@ -171,7 +157,6 @@ public class CourseService {
         }else{
             cover_path=cou_cover_path;
         }
-
         Course course = new Course(cou_name, cou_tea_name, cou_info, cou_hour, cover_path, 1);
         Integer n1 = courseMapper.insertCourse(course);
 

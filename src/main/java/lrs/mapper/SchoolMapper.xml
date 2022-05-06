@@ -6,5 +6,23 @@
     <select id="querySchById" resultType="lrs.entity.School">
         select * from school where sch_id=#{sch_id}
     </select>
+    <select id="queryAllSchool" resultType="lrs.entity.School">
+        select sch_id,sch_name,sch_img_path from school
+    </select>
+
+    <resultMap id="convertClass" type="lrs.entity.Class">
+        <id property="class_id" column="cla_id"></id>
+        <result property="class_name" column="cla_name"></result>
+    </resultMap>
+    <select id="queryAllClaBySchId" resultMap="convertClass">
+        select cla_id,cla_name from class where cla_id in (
+            select cla_id from school_class where sch_id=#{sch_id}
+        )
+    </select>
+
+    <insert id="addSchTea">
+        insert into school_tea (sch_id,tea_id) values (#{sch_id},#{tea_id})
+    </insert>
+
 
 </mapper>

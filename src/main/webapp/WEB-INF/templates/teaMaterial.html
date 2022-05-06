@@ -72,13 +72,12 @@
     <div class="navbar_mid clearfix">
         <ul>
             <li><a href="/index">首页</a></li>
-            <li><a href="/login" th:if="${session.user==null}">我的课程</a></li>
-            <li><a href="/stu_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">我的课程</a></li>
-            <li><a href="/tea_courses" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">我的课程</a></li>
-            <li><a href="/login" th:if="${session.user==null}">我的资料</a></li>
-            <li><a href="/material" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}">课程资料</a></li>
-            <li><a href="/toTeaMaterial" th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}">课程资料</a></li>
-            <li><a href="javascript:;">考试中心</a></li>
+            <li th:if="${session.user==null}"><a href="/login">我的课程</a></li>
+            <li th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}"><a href="/stu_courses">我的课程</a></li>
+            <li th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}"><a href="/tea_courses">我的课程</a></li>
+            <li th:if="${session.user==null}"><a href="/login" >我的资料</a></li>
+            <li th:if="${session.user!=null&&#strings.startsWith(session.user.id,'1')}"><a href="/material">课程资料</a></li>
+            <li th:if="${session.user!=null&&#strings.startsWith(session.user.id,'2')}"><a href="/toTeaMaterial">课程资料</a></li>
             <li><a href="/profile">个人中心</a></li>
         </ul>
     </div>

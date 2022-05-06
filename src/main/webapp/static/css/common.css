@@ -90,12 +90,12 @@ nav a {
 .navbar_mid {
     float: left;
     line-height: 50px;
-    margin-left: 50px;
+    margin-left: 100px;
 }
 
 .navbar_mid li {
     float: left;
-    margin-left: 50px;
+    margin-left: 100px;
 }
 
 .navbar_right {

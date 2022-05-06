@@ -1,6 +1,7 @@
 package lrs.service;
 
 
+import lrs.entity.Class;
 import lrs.entity.School;
 import lrs.mapper.ClassMapper;
 import lrs.mapper.SchoolMapper;
@@ -8,6 +9,8 @@ import lrs.mapper.StudentMapper;
 import lrs.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SchoolService {
@@ -34,5 +37,13 @@ public class SchoolService {
     public School querySchByTeaId(Integer tea_id){
         Integer sch_id=teacherMapper.querySchIdByTeaId(tea_id);
         return schoolMapper.querySchById(sch_id);
+    }
+
+    public List<School> queryAllSchool(){
+        return schoolMapper.queryAllSchool();
+    }
+
+    public List<Class> queryAllClaBySchId(Integer sch_id){
+        return schoolMapper.queryAllClaBySchId(sch_id);
     }
 }

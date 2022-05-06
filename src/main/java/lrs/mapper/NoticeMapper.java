@@ -10,4 +10,5 @@ public interface NoticeMapper {
     List<Notice> queryAllNotice2();
     Integer addNotice(Notice notice);
     Integer deleteNoticeById(@Param("not_id") Integer not_id);
+    Integer updateNotice(@Param("not_id") Integer not_id,@Param("not_content") String not_content);
 }

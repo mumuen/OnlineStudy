@@ -266,7 +266,7 @@
         <div class="head_left">后台管理系统</div>
         <div class="head_right">
             <span>管理员:</span>
-            <span>admin</span>
+            <span th:text="${session.admin.admin_name}"></span>
         </div>
     </div>
     <div class="body">
@@ -292,17 +292,12 @@
                     <div>
                         <span>选择学校:</span>
                         <select  id="uni1" class="shortselect">
-                            <option value="深圳大学" selected="selected">深圳大学</option>
-                            <option value="江西农业大学">江西农业大学</option>
-                            <option value="南昌大学">南昌大学</option>
+                            <option th:value="${school.sch_name}" th:sch_id="${school.sch_id}"  th:each="school:${schools}" th:text="${school.sch_name}"></option>
                         </select>
                     </div>
                     <div>
                         <span>选择班级:</span>
                         <select  id="cla1" class="shortselect" disabled>
-                            <option value="计科1805班" selected="selected">计科1805班</option>
-                            <option value="计科1806班">计科1806班</option>
-                            <option value="计科1804班">计科1804班</option>
                         </select>
                     </div>
                 </div>
@@ -334,18 +329,13 @@
                     </div>
                     <div>
                         <span>选择学校:</span>
-                        <select id="uni2"  class="shortselect">
-                            <option value="深圳大学" selected="selected">深圳大学</option>
-                            <option value="江西农业大学">江西农业大学</option>
-                            <option value="南昌大学">南昌大学</option>
+                        <select  id="uni2" class="shortselect">
+                            <option th:value="${school.sch_name}" th:sch_id="${school.sch_id}"  th:each="school:${schools}" th:text="${school.sch_name}"></option>
                         </select>
                     </div>
                     <div>
                         <span>选择班级:</span>
                         <select id="cla2"  class="shortselect" disabled>
-                            <option value="计科1805班" selected="selected">计科1805班</option>
-                            <option value="计科1806班">计科1806班</option>
-                            <option value="计科1804班">计科1804班</option>
                         </select>
                     </div>
                     <div>
@@ -396,10 +386,8 @@
                 <div class="user_alter_bar">
                     <div>
                         <span>选择学校:</span>
-                        <select id="uni3"  class="shortselect">
-                            <option value="深圳大学">深圳大学</option>
-                            <option value="江西农业大学">江西农业大学</option>
-                            <option value="南昌大学">南昌大学</option>
+                        <select  id="uni3" class="shortselect">
+                            <option th:value="${school.sch_name}" th:sch_id="${school.sch_id}"  th:each="school:${schools}" th:text="${school.sch_name}"></option>
                         </select>
                     </div>
                     <div>
@@ -463,51 +451,21 @@
                 </div>
             </div>
             <div id="notice_delete" class="hidden">
-                <div class="not_item">
-                    <div class="not_item_index">1.</div>
-                    <div class="not_item_title">4月14日更新公告</div>
-                    <div class="not_item_content">这是更新公告的内容！</div>
-                    <div class="not_item_btn"><button class="btn">删除</button></div>
+                <div class="not_item" th:if="${#arrays.length(notices)!=0}" th:each="notice:${notices}">
+                    <div class="not_item_index" th:text="${noticeStat.index+1}+'.'"></div>
+                    <div class="not_item_title" th:text="${notice.not_title}"></div>
+                    <div class="not_item_content" th:text="${notice.not_content}"></div>
+                    <div class="not_item_btn"><button class="btn">删除公告</button></div>
+                    <div class="not_item_id hidden" th:text="${notice.not_id}"></div>
                 </div>
-                <div class="not_item">
-                    <div class="not_id hidden"></div>
-                    <div class="not_item_index">2.</div>
-                    <div class="not_item_title">4月15日更新公告</div>
-                    <div class="not_item_content">这是更新公告的内容！</div>
-                    <div class="not_item_btn"><button class="btn">删除</button></div>
-                </div>
-                <div class="not_item">
-                    <div class="not_item_index">3.</div>
-                    <div class="not_item_title">4月16日更新公告</div>
-                    <div class="not_item_content">这是更新公告的内容！</div>
-                    <div class="not_item_btn"><button class="btn">删除</button></div>
-                </div>
-                <div class="not_item">
-                    <div class="not_item_index">4.</div>
-                    <div class="not_item_title">4月17日更新公告</div>
-                    <div class="not_item_content">这是更新公告的内容！</div>
-                    <div class="not_item_btn"><button class="btn">删除</button></div>
-                </div>
-                <div class="not_item">
-                    <div class="not_item_index">5.</div>
-                    <div class="not_item_title">4月18日更新公告</div>
-                    <div class="not_item_content">这是更新公告的内容！</div>
-                    <div class="not_item_btn"><button class="btn">删除</button></div>
-                </div>
-                <div class="not_item">
-                    <div class="not_item_index">6.</div>
-                    <div class="not_item_title">4月19日更新公告</div>
-                    <div class="not_item_content">这是更新公告的内容！</div>
-                    <div class="not_item_btn"><button class="btn">删除</button></div>
-                </div>
-
             </div>
             <div id="notice_alter" class="hidden">
-                <div class="not_item">
-                    <div class="not_item_index">1.</div>
-                    <div class="not_item_title">4月14日更新公告4月14日更新公告4月14日更新公告</div>
-                    <div class="not_item_content">这是更新公告的内容！</div>
-                    <div class="not_item_btn"><button class="btn">修改</button></div>
+                <div class="not_item" th:each="notice:${notices}">
+                    <div class="not_item_index" th:text="${noticeStat.index+1}+'.'"></div>
+                    <div class="not_item_title" th:text="${notice.not_title}"></div>
+                    <div class="not_item_content" th:text="${notice.not_content}"></div>
+                    <div class="not_item_btn"><button class="btn">修改公告</button></div>
+                    <div class="not_item_id hidden" th:text="${notice.not_id}"></div>
                 </div>
             </div>
         </div>
@@ -526,6 +484,7 @@
 </div>
 
 <div class="bc hidden"></div>
+<div class="hidden" id="not_id_temp"></div>
 
 
 <script>
@@ -543,34 +502,196 @@
 
         function fn1(){
             $("input:radio[name='role1']").on("change",function(){
-
-                if($("#role_s_1").prop("checked")){
-                    $("#cla1").removeAttr("disabled")
-                }else{
-                    $("#cla1").prop("disabled",'disabled');
-                }
+                addC(1);
             });
+
             $("input:radio[name='role2']").on("change",function(){
-
-                if($("#role_s_2").prop("checked")){
-                    $("#cla2").removeAttr("disabled")
-                }else{
-                    $("#cla2").prop("disabled",'disabled');
-                }
+                addC(2);
             });
+
+            function addC(index){
+                if($("#role_s_"+index).prop("checked")){
+                    $("#cla"+index).removeAttr("disabled")
+                    var sch_id=$('#uni'+index+' option:selected').attr("sch_id");
+                    $.ajax({
+                        url: "/admin/queryClass",
+                        type: "get",
+                        dataType: "json",
+                        data:  {
+                            "sch_id":sch_id
+                        },
+                        success: function(result){
+                            for(var i=0;i<result.length;i++){
+                                $("#cla"+index).append('<option cla_id="'+result[i].class_id+'" value="'+result[i].class_name+'">'+result[i].class_name+'</option>');
+                            }
+                        }
+                    })
+                }else{
+                    $("#cla"+index).prop("disabled",'disabled');
+                    $("#cla"+index).empty();
+                }
+            }
+
+            $('#uni1').on('change', function(){
+                addC1(1);
+            })
+            $('#uni2').on('change', function(){
+                addC1(2);
+            })
+            function addC1(index){
+                if($("#role_s_"+index).prop("checked")){
+                    $("#cla"+index).empty();
+                    var sch_id=$('#uni'+index+' option:selected').attr("sch_id");
+                    $.ajax({
+                        url: "/admin/queryClass",
+                        type: "get",
+                        dataType: "json",
+                        data:  {
+                            "sch_id":sch_id
+                        },
+                        success: function(result){
+                            for(var i=0;i<result.length;i++){
+                                $("#cla"+index).append('<option cla_id="'+result[i].class_id+'" value="'+result[i].class_name+'">'+result[i].class_name+'</option>');
+                            }
+                        }
+                    })
+                }
+            }
         }
         fn1();
 
+
+
         function btn1(){
             $("#btn1").on("click",function(){
-                alert("添加用户成功！");
+                var u_name=$(this).parent().siblings(".box_uname").children("input").val();
+                var u_id=$(this).parent().siblings(".box_id").children("input").val();
+                var u_pwd=$(this).parent().siblings(".box_pwd").children("input").val();
+                var sch_id=$('#uni1 option:selected').attr("sch_id");
+                if($("#role_s_1").prop("checked")){
+                    addStu(this);
+                }else{
+                    addTea(this);
+                }
+                function addStu(obj){
+                    var cla_id=$("#cla1 option:selected").attr("cla_id");
+                    var formData=new FormData();
+                    formData.append("u_name",u_name);
+                    formData.append("u_id",u_id);
+                    formData.append("u_pwd",u_pwd);
+                    formData.append("cla_id",cla_id);
+                    $.ajax({
+                        url: "/admin/addStu",
+                        type: "post",
+                        dataType: "json",
+                        data:  formData,
+                        contentType: false, //必须false才会自动加上正确的Content-Type
+                        processData: false,  //必须false才会避开jQuery对 formdata 的默认处理
+                        enctype: 'multipart/form-data',
+                        success: function(result){
+                            if(result.code==100){
+                                alert("增加学生成功！");
+                            }else{
+                                alert("增加学生失败！");
+                            }
+                            clearIpt(obj);
+                        },
+                        error: function(){
+                            alert("系统错误！");
+                            clearIpt(obj);
+                        }
+                    })
+                }
+                function addTea(obj){
+                    var formData=new FormData();
+                    formData.append("u_name",u_name);
+                    formData.append("u_id",u_id);
+                    formData.append("u_pwd",u_pwd);
+                    formData.append("sch_id",sch_id);
+                    $.ajax({
+                        url: "/admin/addTea",
+                        type: "post",
+                        dataType: "json",
+                        data:  formData,
+                        contentType: false, //必须false才会自动加上正确的Content-Type
+                        processData: false,  //必须false才会避开jQuery对 formdata 的默认处理
+                        enctype: 'multipart/form-data',
+                        success: function(result){
+                            if(result.code==100){
+                                alert("增加教师成功！");
+                            }else{
+                                alert("增加教师失败！");
+                            }
+                            clearIpt(obj);
+                        }
+                    })
+                }
+
+                function clearIpt(obj){
+                    $(obj).parent().siblings(".box_uname").children("input").val("");
+                    $(obj).parent().siblings(".box_id").children("input").val("");
+                    $(obj).parent().siblings(".box_pwd").children("input").val("");
+                }
             })
+
+
         }
         btn1();
+
         function btn2(){
-            $(".del_item .btn").on("click",function(){
-                alert("删除用户成功！");
-            })
+            //查询用户
+            $("#btn2").on("click",function(){
+                if($("#role_s_2").prop("checked")){
+                    queryStu();
+                }else{
+                    queryTea();
+                }
+            });
+
+            function queryStu(){
+                var cla_id=$('#cla2 option:selected').attr("cla_id");
+                $.ajax({
+                    url: "/admin/queryStu",
+                    type: "get",
+                    dataType: "json",
+                    data:  {
+                        "cla_id":cla_id
+                    },
+                    success: function(result){
+                        $(".user_delete_body").empty();
+                        for(var i=0;i<result.length;i++){
+                            $(".user_delete_body").append('<div class="del_item">\n' +
+                                '                        <div class="del_item_index">'+(i+1)+'.</div>\n' +
+                                '                        <div class="del_item_uname">'+result[i].name+'</div>\n' +
+                                '                        <div class="del_item_uid">'+result[i].id+'</div>\n' +
+                                '                        <div class="del_item_btn"><button class="btn">删除用户</button></div>\n' +
+                                '                    </div>');
+                        }
+                    }
+                })
+            }
+            function queryTea(){
+                var sch_id=$('#uni2 option:selected').attr("sch_id");
+                $.ajax({
+                    url: "/admin/queryTea",
+                    type: "get",
+                    dataType: "json",
+                    data:  {
+                        "sch_id":sch_id
+                    },
+                    success: function(result){
+                        $(".user_delete_body").empty();
+                        for(var i=0;i<result.length;i++){
+                            $(".user_delete_body").append('<div class="del_item">\n' +
+                                '                        <div class="del_item_index">'+(i+1)+'.</div>\n' +
+                                '                        <div class="del_item_uname">'+result[i].name+'</div>\n' +
+                                '                        <div class="del_item_uid">'+result[i].id+'</div>\n' +
+                                '                        <div class="del_item_btn"><button class="btn">删除用户</button></div>\n' +
+                                '                    </div>');
+                        }
+                    }
+                })
+            }
         }
         btn2();
         function btn4(){
@@ -581,13 +702,70 @@
         btn4();
         function btn6(){
             $("#btn6").on("click",function(){
-                alert("增加公告成功！");
+                var not_title=$(".title_box input").val().trim();
+                if(not_title==""){
+                    alert("请输入公告标题!");
+                    return;
+                }
+                var not_content=$(".content_box textarea").val().trim();
+                if(not_content==""){
+                    alert("请输入公告内容!");
+                    return;
+                }
+                var formData = new FormData();
+                formData.append("not_title",not_title);
+                formData.append("not_content",not_content);
+                $.ajax({
+                    url: "/admin/add",
+                    type: "post",
+                    dataType: "json",
+                    data:  formData,
+                    contentType: false, //必须false才会自动加上正确的Content-Type
+                    processData: false,  //必须false才会避开jQuery对 formdata 的默认处理
+                    enctype: 'multipart/form-data',
+                    success: function(result){
+                        if(result.code==100){
+                            alert("增加公告成功！");
+                            $(".title_box input").val("");
+                            $(".content_box textarea").val("")
+                        }else{
+                            alert("增加公告失败！");
+                        }
+                    }
+                })
             })
         }
         btn6();
         function btn7(){
             $("#btn7").on("click",function(){
-                alert("修改公告成功！");
+                var not_content=$(".alter_box_content textarea").val().trim();
+                if(not_content==""){
+                    alert("请填写公告内容!");
+                    return;
+                }
+                var not_id=$("#not_id_temp").text();
+                var formData = new FormData();
+                formData.append("not_content",not_content);
+                formData.append("not_id",not_id);
+                $.ajax({
+                    url: "/admin/update",
+                    type: "post",
+                    dataType: "json",
+                    data:  formData,
+                    contentType: false, //必须false才会自动加上正确的Content-Type
+                    processData: false,  //必须false才会避开jQuery对 formdata 的默认处理
+                    enctype: 'multipart/form-data',
+                    success: function(result){
+                        if(result.code==100){
+                            alert("修改公告成功！");
+                            $("#alter_box").hide();
+                            $(".bc").hide();
+                            $(".alter_box_content textarea").val("");
+                        }else{
+                            alert("修改公告失败！");
+                        }
+                    }
+                })
             })
         }
         btn7();
@@ -602,7 +780,22 @@
 
         function delNot(){
             $("#notice_delete .btn").on("click",function(){
-                alert("删除公告成功！");
+                var not_id=$(this).parent().siblings(".not_item_id").text();
+                $.ajax({
+                    url: "/admin/delete",
+                    type: "get",
+                    dataType: "json",
+                    data:  {
+                        "not_id":not_id
+                    },
+                    success: function(result){
+                        if(result.code==100){
+                            alert("删除公告成功！");
+                        }else{
+                            alert("删除公告失败！");
+                        }
+                    }
+                })
             });
         }
         delNot();
@@ -611,9 +804,21 @@
             $("#notice_alter .btn").on("click",function(){
                 $("#alter_box").show();
                 $(".bc").show();
+                var not_content=$(this).parent().siblings(".not_item_content").text();
+                $(".alter_box_content textarea").val(not_content);
+                var not_id=$(this).parent().siblings(".not_item_id").text();
+                $("#not_id_temp").text(not_id);
             });
         }
         altNot();
+
+        function delUser(){
+            $(".del_item .btn").on("click",function(){
+
+                alert("删除用户成功！");
+            })
+        };
+        delUser();
     })
 </script>
 </body>

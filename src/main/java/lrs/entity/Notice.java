@@ -9,8 +9,7 @@ public class Notice {
     public Notice() {
     }
 
-    public Notice(Integer not_id, String not_title, String not_content, String not_date) {
-        this.not_id = not_id;
+    public Notice(String not_title, String not_content, String not_date) {
         this.not_title = not_title;
         this.not_content = not_content;
         this.not_date = not_date;

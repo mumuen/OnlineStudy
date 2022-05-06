@@ -11,6 +11,12 @@ public class Teacher {
     public Teacher() {
     }
 
+    public Teacher(Integer id, String pwd, String name) {
+        this.id = id;
+        this.pwd = pwd;
+        this.name = name;
+    }
+
     public Teacher(Integer id, String pwd, String name, String tel, String mail, Integer sex) {
         this.id = id;
         this.pwd = pwd;

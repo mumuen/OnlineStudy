@@ -70,7 +70,6 @@ public class LoginController {
         session.setAttribute("user",stu);
         session.setAttribute("class",cla);
         session.setAttribute("school",sch);
-
         return new BaseResponse(StatusCode.SUCCESS);
     }
 

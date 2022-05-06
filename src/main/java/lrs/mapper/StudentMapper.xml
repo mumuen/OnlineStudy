@@ -36,4 +36,10 @@
     <insert id="addStudent" parameterType="lrs.entity.Student">
         insert into student (stu_id,stu_pwd,stu_name,stu_state) values (#{id},#{pwd},#{name},1);
     </insert>
+
+    <select id="queryStusByClaId" resultMap="convertStudent">
+        select stu_id,stu_pwd,stu_name,stu_tel,stu_mail,stu_sex from student where stu_id in(
+            select stu_id from cla_stu where cla_id=#{cla_id}
+        )
+    </select>
 </mapper>

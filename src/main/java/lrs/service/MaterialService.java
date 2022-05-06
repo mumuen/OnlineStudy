@@ -47,17 +47,13 @@ public class MaterialService {
         String suffix = mat_name.substring(mat_name.lastIndexOf("."));
         String mat_path=GlobalSetting.MAT_PATH_HEAD+uuid+suffix;
         String mat_date= DateUtils.getCurDate();
-
         String local_path_head=request.getServletContext().getRealPath("/");
         String local_parh=local_path_head+GlobalSetting.MAT_PATH_HEAD+uuid+suffix;
-
         File file = new File(local_parh);
         material.transferTo(file);
-
         Material mat=new Material(mat_name,mat_path,mat_size,mat_date);
         Integer n = materialMapper.insertMat(mat);
         courseMapper.insertCouMatByCouIdAndMatId(cou_id,mat.getMat_id());
-
         return n;
     }
 }
